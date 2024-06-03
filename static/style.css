@@ -1,0 +1,799 @@
+@font-face {
+    font-family: 'Abril Fatface';
+    font-display: optional;
+    font-style: normal;
+    font-weight: 400;
+    src: local('Abril Fatface'), local('AbrilFatface-Regular'), url(https://fonts.gstatic.com/s/abrilfatface/v9/zOL64pLDlL1D99S8g8PtiKchq-dmjQ.woff2) format('woff2'), url(https://fonts.gstatic.com/s/abrilfatface/v9/zOL64pLDlL1D99S8g8PtiKchq-dmiw.woff) format('woff');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+}
+
+@font-face {
+    font-family: 'PT Sans';
+    font-display: optional;
+    font-style: normal;
+    font-weight: 400;
+    src: local('PT Sans'), local('PTSans-Regular'), url(https://fonts.gstatic.com/s/ptsans/v9/jizaRExUiTo99u79D0KExQ.woff2) format('woff2'), url(https://fonts.gstatic.com/s/ptsans/v9/jizaRExUiTo99u79D0KEww.woff) format('woff');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+}
+
+@font-face {
+    font-family: 'PT Sans';
+    font-display: optional;
+    font-style: normal;
+    font-weight: 700;
+    src: local('PT Sans Bold'), local('PTSans-Bold'), url(https://fonts.gstatic.com/s/ptsans/v9/jizfRExUiTo99u79B_mh0O6tLQ.woff2) format('woff2'), url(https://fonts.gstatic.com/s/ptsans/v9/jizfRExUiTo99u79B_mh0O6tKw.woff) format('woff');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0
+}
+
+html {
+    font-family: "PT Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    line-height: 1.5
+}
+
+@media (min-width:38em) {
+    html {
+        font-size: 20px
+    }
+}
+
+@media (min-width:48em) {
+    html {
+        font-size: 16px
+    }
+}
+
+@media (min-width:58em) {
+    html {
+        font-size: 20px
+    }
+}
+
+body {
+    color: rgba(0, 0, 0, .84);
+    background-color: #fff;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%
+}
+
+a {
+    color: #1967d2;
+    text-decoration: none
+}
+
+a:focus,
+a:hover {
+    text-decoration: underline
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: .5rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #313131;
+    text-rendering: optimizeLegibility
+}
+
+h1 {
+    font-size: 2rem
+}
+
+h2 {
+    margin-top: 2rem;
+    font-size: 1.5rem
+}
+
+h3 {
+    margin-top: 2rem;
+    font-size: 1.25rem
+}
+
+h4,
+h5,
+h6 {
+    margin-top: 1.7rem;
+    font-size: 1.05rem
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1.7rem
+}
+
+strong {
+    color: #303030
+}
+
+dl,
+ol,
+ul {
+    margin-top: 0
+}
+
+dt {
+    font-weight: 700
+}
+
+dd {
+    margin-bottom: .5rem
+}
+
+ol li ul {
+    list-style-type: disc
+}
+
+hr {
+    position: relative;
+    margin: 1.5rem 0;
+    border: 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #fff
+}
+
+abbr {
+    font-size: 85%;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase
+}
+
+abbr[title] {
+    cursor: help;
+    border-bottom: 1px dotted #e5e5e5
+}
+
+code,
+pre {
+    font-family: Menlo, Monaco, "Courier New", monospace
+}
+
+code {
+    padding: .25em .5em;
+    font-size: 85%;
+    color: #444;
+    background-color: #f0f0f0;
+    border-radius: 3px
+}
+
+pre {
+    display: block;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    font-size: .8rem;
+    line-height: 1.4;
+    white-space: pre;
+    border-radius: 4px;
+    overflow-x: auto
+}
+
+pre code {
+    padding: 0;
+    font-size: 100%;
+    color: inherit;
+    background-color: transparent
+}
+
+.highlight {
+    margin-bottom: 1.5rem;
+    border-radius: 4px
+}
+
+.highlight pre {
+    margin-bottom: 0
+}
+
+blockquote {
+    padding: .5rem 1rem;
+    margin: .8rem 0;
+    color: #7a7a7a;
+    border-left: .25rem solid #e5e5e5
+}
+
+blockquote p:last-child {
+    margin-bottom: 0
+}
+
+@media (min-width:30em) {
+    blockquote {
+        padding-right: 5rem;
+        padding-left: 1.25rem
+    }
+}
+
+img {
+    display: block;
+    margin: 0 0 1.7rem;
+    border-radius: 5px;
+    max-width: 100%;
+    height: auto
+}
+
+table {
+    margin-bottom: 1rem;
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    border-collapse: collapse
+}
+
+td,
+th {
+    padding: .25rem .5rem;
+    border: 1px solid #e5e5e5
+}
+
+tbody tr:nth-child(odd) td,
+tbody tr:nth-child(odd) th {
+    background-color: #f9f9f9
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300
+}
+
+.message {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    color: #717171;
+    background-color: #f9f9f9
+}
+
+.sidebar {
+    text-align: center;
+    padding: 2.1rem 1rem
+}
+
+@media (min-width:48em) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 18rem;
+        text-align: left;
+        margin: 1rem 0;
+        border-right: solid 5px
+    }
+}
+
+@media (max-width:48em) {
+    .sidebar {
+        margin: 0 1rem;
+        border-bottom: solid 5px;
+        padding: 1rem 1rem
+    }
+}
+
+.sidebar-about a {
+    text-decoration: none
+}
+
+.sidebar-about h1,
+.sidebar-about h2 {
+    margin-top: 0;
+    font-family: "Abril Fatface", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 2.5rem
+}
+
+.sidebar-nav {
+    border-top: 1px dashed #ccc;
+    border-bottom: 1px dashed #ccc;
+    padding: .5rem 0 .6rem;
+    margin-bottom: .6rem;
+    font-weight: 700
+}
+
+.sidebar-nav li {
+    display: inline
+}
+
+.sidebar-nav li:after {
+    content: " | "
+}
+
+.sidebar-nav li:last-child:after {
+    content: ""
+}
+
+.logo {
+    text-align: center;
+    margin: 1rem auto 0 auto;
+    width: 50px;
+    height: 50px
+}
+
+@media (min-width:48em) {
+    .logo {
+        margin-top: 2rem;
+        width: 11rem;
+        height: 11rem
+    }
+}
+
+.container {
+    max-width: 38rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: auto;
+    margin-right: auto
+}
+
+@media (max-width:48em) {
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem
+    }
+}
+
+.content {
+    padding-top: 3.5rem;
+    padding-bottom: 4rem
+}
+
+@media (max-width:48em) {
+    .content {
+        padding-top: 1.6rem;
+        padding-bottom: 2rem
+    }
+}
+
+@media (min-width:48em) {
+    .content {
+        max-width: 38rem;
+        margin-left: 20rem;
+        margin-right: 2rem
+    }
+}
+
+@media (min-width:64em) {
+    .content {
+        margin-left: 22rem;
+        margin-right: 4rem
+    }
+}
+
+.masthead {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 3rem
+}
+
+.masthead-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #505050
+}
+
+.masthead-title a {
+    color: #505050
+}
+
+.masthead-title small {
+    font-size: 75%;
+    font-weight: 400;
+    color: silver;
+    letter-spacing: 0
+}
+
+.page,
+.post {
+    margin-bottom: 3em
+}
+
+.post h1 {
+    font-size: 2.5rem;
+    line-height: 1
+}
+
+.posts h2 {
+    font-size: 2rem
+}
+
+.page-title,
+.post-title,
+.post-title a {
+    color: #303030
+}
+
+.page-title,
+.post-title {
+    margin-top: 0
+}
+
+.post-date {
+    display: block;
+    margin-bottom: 1rem;
+    color: #999;
+    font-size: 1rem
+}
+
+.post-list {
+    padding-left: 0;
+    list-style: none
+}
+
+.related {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    border-top: 1px solid #eee
+}
+
+.related-posts {
+    padding-left: 0;
+    list-style: none
+}
+
+.related-posts h3 {
+    margin-top: 0
+}
+
+.related-posts li small {
+    font-size: 75%;
+    color: #999
+}
+
+.related-posts li a:hover {
+    color: #268bd2;
+    text-decoration: none
+}
+
+.related-posts li a:hover small {
+    color: inherit
+}
+
+.pagination {
+    overflow: hidden;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    font-family: "PT Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    color: #ccc;
+    text-align: center
+}
+
+.pagination-item {
+    display: block;
+    padding: 1rem;
+    border: 1px solid #eee
+}
+
+.pagination-item:first-child {
+    margin-bottom: -1px
+}
+
+a.pagination-item:hover {
+    background-color: #f5f5f5
+}
+
+@media (min-width:30em) {
+    .pagination {
+        margin: 3rem 0
+    }
+
+    .pagination-item {
+        float: left;
+        width: 50%
+    }
+
+    .pagination-item:first-child {
+        margin-bottom: 0;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px
+    }
+
+    .pagination-item:last-child {
+        margin-left: -1px;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px
+    }
+}
+
+.credits {
+    font-size: .7rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem
+}
+
+.credits nav {
+    display: inline
+}
+
+@media (min-width:48em) {
+    .credits {
+        margin-left: 21rem
+    }
+}
+
+@media (min-width:64em) {
+    .credits {
+        margin-left: 23rem
+    }
+}
+
+#myBtn {
+    display: none;
+    font-size: .6rem;
+    position: fixed;
+    bottom: 1rem;
+    right: .9rem;
+    z-index: 99;
+    border: none;
+    outline: 0;
+    background-color: #268bd2;
+    color: #fff;
+    cursor: pointer;
+    padding: .4rem .6rem;
+    border-radius: .4rem
+}
+
+#myBtn:hover {
+    background-color: #555
+}
+
+.chroma {
+    color: #f8f8f2;
+    background-color: #272822
+}
+
+.chroma .err {
+    color: #960050;
+    background-color: #1e0010
+}
+
+.chroma .lntd {
+    vertical-align: top;
+    padding: 0;
+    margin: 0;
+    border: 0
+}
+
+.chroma .lntable {
+    border-spacing: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    width: auto;
+    overflow: auto;
+    display: block
+}
+
+.chroma .hl {
+    display: block;
+    width: 100%;
+    background-color: #ffc
+}
+
+.chroma .lnt {
+    margin-right: .4em;
+    padding: 0 .4em 0 .4em
+}
+
+.chroma .ln {
+    margin-right: .4em;
+    padding: 0 .4em 0 .4em
+}
+
+.chroma .k {
+    color: #66d9ef
+}
+
+.chroma .kc {
+    color: #66d9ef
+}
+
+.chroma .kd {
+    color: #66d9ef
+}
+
+.chroma .kn {
+    color: #f92672
+}
+
+.chroma .kp {
+    color: #66d9ef
+}
+
+.chroma .kr {
+    color: #66d9ef
+}
+
+.chroma .kt {
+    color: #66d9ef
+}
+
+.chroma .na {
+    color: #a6e22e
+}
+
+.chroma .nc {
+    color: #a6e22e
+}
+
+.chroma .no {
+    color: #66d9ef
+}
+
+.chroma .nd {
+    color: #a6e22e
+}
+
+.chroma .ne {
+    color: #a6e22e
+}
+
+.chroma .nf {
+    color: #a6e22e
+}
+
+.chroma .nx {
+    color: #a6e22e
+}
+
+.chroma .nt {
+    color: #f92672
+}
+
+.chroma .l {
+    color: #ae81ff
+}
+
+.chroma .ld {
+    color: #e6db74
+}
+
+.chroma .s {
+    color: #e6db74
+}
+
+.chroma .sa {
+    color: #e6db74
+}
+
+.chroma .sb {
+    color: #e6db74
+}
+
+.chroma .sc {
+    color: #e6db74
+}
+
+.chroma .dl {
+    color: #e6db74
+}
+
+.chroma .sd {
+    color: #e6db74
+}
+
+.chroma .s2 {
+    color: #e6db74
+}
+
+.chroma .se {
+    color: #ae81ff
+}
+
+.chroma .sh {
+    color: #e6db74
+}
+
+.chroma .si {
+    color: #e6db74
+}
+
+.chroma .sx {
+    color: #e6db74
+}
+
+.chroma .sr {
+    color: #e6db74
+}
+
+.chroma .s1 {
+    color: #e6db74
+}
+
+.chroma .ss {
+    color: #e6db74
+}
+
+.chroma .m {
+    color: #ae81ff
+}
+
+.chroma .mb {
+    color: #ae81ff
+}
+
+.chroma .mf {
+    color: #ae81ff
+}
+
+.chroma .mh {
+    color: #ae81ff
+}
+
+.chroma .mi {
+    color: #ae81ff
+}
+
+.chroma .il {
+    color: #ae81ff
+}
+
+.chroma .mo {
+    color: #ae81ff
+}
+
+.chroma .o {
+    color: #f92672
+}
+
+.chroma .ow {
+    color: #f92672
+}
+
+.chroma .c {
+    color: #75715e
+}
+
+.chroma .ch {
+    color: #75715e
+}
+
+.chroma .cm {
+    color: #75715e
+}
+
+.chroma .c1 {
+    color: #75715e
+}
+
+.chroma .cs {
+    color: #75715e
+}
+
+.chroma .cp {
+    color: #75715e
+}
+
+.chroma .cpf {
+    color: #75715e
+}
+
+.chroma .gd {
+    color: #f92672
+}
+
+.chroma .ge {
+    font-style: italic
+}
+
+.chroma .gi {
+    color: #a6e22e
+}
+
+.chroma .gs {
+    font-weight: 700
+}
+
+.chroma .gu {
+    color: #75715e
+}
