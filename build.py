@@ -4,7 +4,6 @@ import logging
 from markdown import markdown
 from dotenv import dotenv_values
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from jinja2.exceptions import TemplateNotFound
 
 
 logging.getLogger().setLevel(logging.INFO)
@@ -23,7 +22,6 @@ pathlib.Path("build").mkdir(exist_ok=True)
 
 # load theme's templates folder to Jinja's environment
 env = Environment(loader=FileSystemLoader(templates), autoescape=select_autoescape())
-
 
 # load the `index.html` template
 index_template = env.get_template("index.html")
