@@ -1,5 +1,10 @@
 .vscode/
 __pycache__/
+
+# environment dir/files
 .venv/
 venv/
 .env
+
+# build dir
+build/
