@@ -10,3 +10,4 @@ class Config:
 
     THEME: str = "default"
     GTAG_ID: str | None = None
+    CONTACT_EMAIL: str | None = None

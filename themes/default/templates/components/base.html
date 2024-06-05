@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title_tag %}
+        {{ config.SITE_NAME }}
+        {% endblock title_tag %}
+    </title>
+
+    <link rel="preload" href="static/style.css" as="style">
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+
+    {% block meta %}
+    <meta property="og:site_name" content="{{ config.SITE_NAME }}">
+    <meta property="og:type" content="website">
+    {% endblock meta %}
+
+    <link rel="apple-touch-icon" sizes="180x180" href="static/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/favicon-16x16.png">
+    <link rel="manifest" href="static/manifest.json">
+    <link rel="mask-icon" href="static/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
+
+    {% if config.GTAG_ID %}
+    {% include 'components/analytics.html' %}
+    {% endif %}
+
+</head>
+
+<body class="top">
+    <aside class="sidebar">
+        <div class="container">
+
+            <header class="sidebar-about">
+                <a href="/">
+                    {% if title %}
+                    <h2>{{ config.SITE_NAME }}</h2>
+                    {% else %}
+                    <h1>{{ config.SITE_NAME }}</h1>
+                    {% endif %}
+                </a>
+                <p class="lead">{{ config.SITE_TAGLINE }}.</p>
+            </header>
+
+            <nav>
+                <ul class="sidebar-nav">
+                    {% for category in categories %}
+                    <li><a href="/categories/{{ category.slug }}/">{{ category.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+
+            <div class="logo">
+                <a title="{{ config.SITE_NAME }}" href="/">
+                    <svg viewBox="0 0 181 181">
+                        <g>
+                            <circle fill="none" stroke="#000" stroke-width="5.5" stroke-miterlimit="10" cx="90"
+                                cy="90.9" r="86.9" />
+                            <g>
+                                <polyline fill="none" stroke="#000" stroke-width="5.5" stroke-linecap="square"
+                                    stroke-linejoin="round" stroke-miterlimit="4.48"
+                                    points="113.5,71 133.8,91.2 133.8,91.2 113.5,111.4" />
+                                <polyline fill="none" stroke="#000" stroke-width="5.5" stroke-linecap="square"
+                                    stroke-linejoin="round" stroke-miterlimit="4.48"
+                                    points="66.4,71 46.2,91.2 46.2,91.2 66.4,111.4" />
+                                <line fill="none" stroke="#000" stroke-width="5.5" stroke-miterlimit="10" x1="81.8"
+                                    y1="121.2" x2="98.1" y2="60.6" />
+                            </g>
+                        </g>
+                    </svg>
+                </a>
+            </div>
+
+        </div>
+    </aside>
+
+    <div class="content container">
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    <div class="credits">
+        Hosted on <a rel="nofollow" href="https://aws.amazon.com/">AWS</a>.
+        &copy; 2020. Some rights <a rel="nofollow" href="https://creativecommons.org/licenses/by/3.0/">reserved</a>.
+
+        <nav>
+            {% if pages.about %}
+            &#124;&nbsp;<a href="/pages/{{ pages.about.slug }}/">{{ pages.about.title }}</a>
+            {% endif %}
+
+            {% if pages.privacy %}
+            &nbsp;&#124;&nbsp;<a href="/pages/{{ pages.privacy.slug }}/">{{ pages.privacy.title }}</a>
+            {% endif %}
+
+            {% if config.CONTACT_EMAIL %}
+            &nbsp;&#124;&nbsp;<a href="mailto:{{ config.CONTACT_EMAIL }}">Contact</a>
+            {% endif %}
+        </nav>
+    </div>
+
+    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+    <script>function scrollFunction() { document.body.scrollTop > 200 || document.documentElement.scrollTop > 200 ? document.getElementById("myBtn").style.display = "block" : document.getElementById("myBtn").style.display = "none" } function topFunction() { document.body.scrollTop = 0, document.documentElement.scrollTop = 0 } window.onscroll = function () { scrollFunction() };</script>
+
+</body>
+
+</html>
