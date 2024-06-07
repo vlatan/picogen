@@ -70,23 +70,14 @@ for root, dirs, files in content.walk():
             post_content = (root / fp).read_text().strip()
             _, meta, content = post_content.split("---")
 
-            # TODO: these are potentially unbound
-            for item in meta.strip().splitlines():
-                if "Title: " in item:
-                    title = item.split("Title: ")[-1]
-                elif "Date: " in item:
-                    date = item.split("Date: ")[-1]
-                    date = datetime.strptime(date, "%Y-%m-%d %H:%M")
-                elif "Modified: " in item:
-                    modified = item.split("Modified: ")[-1]
-                    modified = datetime.strptime(modified, "%Y-%m-%d %H:%M")
-                elif "Category: " in item:
-                    name = item.split("Category: ")[-1]
-                    category = Category(name=name, slug=slugify(name))
-                elif "Image: " in item:
-                    image = item.split("Image: ")[-1]
-                elif "Slug: " in item:
-                    slug = item.split("Slug: ")[-1]
+            metadata = {}
+            for line in meta.strip().splitlines():
+                key, value = line.split(": ")
+                if key in ["Date", "Modified"]:
+                    value = datetime.strptime(value, "%Y-%m-%d %H:%M")
+                elif key == "Category":
+                    value = Category(name=value, slug=slugify(value))
+                metadata[key.lower()] = value
 
             paragraphs = content.strip().split("\n\n")
             if "/images/" in paragraphs[0]:
@@ -96,19 +87,12 @@ for root, dirs, files in content.walk():
                 sentences = paragraphs[0].split(". ")
                 excerpt = ". ".join(sentences[:3]) + "."
 
-            post = Post(
-                title=title,
-                date=date,
-                modified=modified,
-                category=category,
-                image=image,
-                slug=slug,
-                excerpt=excerpt,
-                content=markdown(content),
-            )
+            metadata["excerpt"] = excerpt
+            metadata["content"] = markdown(content)
 
+            post = Post(**metadata)
             posts.add(post)
-            categories.add(category)
+            categories.add(metadata.get("category"))
 
         # Sort categories alphabetically
         categories = sorted(categories, key=lambda x: x.name)
