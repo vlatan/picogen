@@ -16,7 +16,8 @@
     <header>
         <h1 class="post-title">{{ post.title }}</h1>
         <span class="post-date">
-            <small><a href="/categories/{{ post.category.slug }}/">{{ post.category.name }}</a> - {{ post.date }}
+            <small><a href="/categories/{{ post.category.slug }}/">{{ post.category.name }}</a> -
+                {{ post.date.strftime('%a, %b %d, %Y') }}
             </small>
         </span>
     </header>

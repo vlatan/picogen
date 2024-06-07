@@ -4,6 +4,7 @@ import pathlib
 import logging
 from slugify import slugify
 from markdown import markdown
+from datetime import datetime
 from dotenv import dotenv_values
 from dataclasses import dataclass
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -22,8 +23,8 @@ if cfg.THEME == "default":
 
 templates = pathlib.Path("themes") / cfg.THEME / "templates"
 
-# create the build directory if it doesn't exist
-pathlib.Path("build").mkdir(exist_ok=True)
+# remove the build directory
+shutil.rmtree(pathlib.Path("build"), ignore_errors=True)
 
 # load theme's templates folder to Jinja's environment
 env = Environment(loader=FileSystemLoader(templates), autoescape=select_autoescape())
@@ -32,44 +33,25 @@ static = pathlib.Path("themes") / cfg.THEME / "static"
 if not static.is_dir():
     raise FileNotFoundError(f"No 'static' directory in your theme: '{static}'.")
 
-# TODO: Empty the entire build dir
-
 # include the static dir in the build
-try:
-    shutil.copytree(static, "build/static")
-except FileExistsError as err:
-    shutil.rmtree("build/static")
-    shutil.copytree(static, "build/static")
-
+shutil.copytree(static, "build/static")
 
 content = pathlib.Path("content")
 if not content.is_dir():
     raise FileNotFoundError(f"No 'content' directory: '{content}'.")
 
 
-# include the images dir in the build
-def copy_dir(src: os.PathLike | str, dest: os.PathLike | str) -> None:
-    """Copy entire directory to destination"""
-    try:
-        shutil.copytree(src, dest)
-    except FileExistsError:
-        shutil.rmtree(dest)
-        shutil.copytree(src, dest)
-    except FileNotFoundError:
-        pass
-
-
-@dataclass
+@dataclass(frozen=True)
 class Category:
     name: str
     slug: str
 
 
-@dataclass
+@dataclass(frozen=True)
 class Post:
     title: str
-    date: str
-    modified: str
+    date: datetime
+    modified: datetime
     category: Category
     image: str
     slug: str
@@ -79,22 +61,25 @@ class Post:
 
 for root, dirs, files in content.walk():
     if str(root) == "content/images":
-        copy_dir(root, "build/images")
+        shutil.copytree(root, "build/images")
         continue
 
     if str(root) == "content/posts":
-        posts, categories = [], []
+        posts, categories = set(), set()
         for fp in files:
-            post_content = (root / fp).read_text()
+            post_content = (root / fp).read_text().strip()
             _, meta, content = post_content.split("---")
 
+            # TODO: these are potentially unbound
             for item in meta.strip().splitlines():
                 if "Title: " in item:
                     title = item.split("Title: ")[-1]
                 elif "Date: " in item:
                     date = item.split("Date: ")[-1]
+                    date = datetime.strptime(date, "%Y-%m-%d %H:%M")
                 elif "Modified: " in item:
                     modified = item.split("Modified: ")[-1]
+                    modified = datetime.strptime(modified, "%Y-%m-%d %H:%M")
                 elif "Category: " in item:
                     name = item.split("Category: ")[-1]
                     category = Category(name=name, slug=slugify(name))
@@ -122,27 +107,27 @@ for root, dirs, files in content.walk():
                 content=markdown(content),
             )
 
-            posts.append(post)
-            categories.append(category)
+            posts.add(post)
+            categories.add(category)
 
-            # TODO: Sort posts by date
-            # TODO: Sort categories alphabetically
+        # Sort categories alphabetically
+        categories = sorted(categories, key=lambda x: x.name)
+        # sort posts by date
+        posts = sorted(posts, key=lambda x: x.date, reverse=True)
 
         for post in posts:
             # create dir in posts with post.slug name
             pathlib.Path(f"build/posts/{post.slug}").mkdir(exist_ok=True, parents=True)
             post_template = env.get_template("post.html")
-            parsed_post_template = post_template.render(
+            parsed_post = post_template.render(
                 post=post,
                 categories=categories,
                 pages=[],
                 config=cfg,
             )
 
-            # write the parsed post template
-            pathlib.Path(f"build/posts/{post.slug}/index.html").write_text(
-                parsed_post_template
-            )
+            # write the parsed post template to file
+            pathlib.Path(f"build/posts/{post.slug}/index.html").write_text(parsed_post)
 
 
 # TODO: Copy or move the favicons to root
