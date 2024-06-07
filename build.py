@@ -19,7 +19,7 @@ env_vars = {key: value for key, value in dotenv_values(".env").items() if value}
 cfg = Config(**env_vars)
 
 if cfg.THEME == "default":
-    logging.info("No custom theme defined, using the default theme.")
+    logging.info("Using the default theme.")
 
 templates = pathlib.Path("themes") / cfg.THEME / "templates"
 
@@ -60,8 +60,8 @@ class Post:
 
 
 for root, dirs, files in content.walk():
-    if str(root) == "content/images":
-        shutil.copytree(root, "build/images")
+    if str(root) == "content/posts/images":
+        shutil.copytree(root, "build/posts/images")
         continue
 
     if str(root) == "content/posts":
