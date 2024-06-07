@@ -3,7 +3,7 @@ import shutil
 import pathlib
 import logging
 from slugify import slugify
-from markdown import markdown
+from markdown import Markdown, markdown
 from datetime import datetime
 from dotenv import dotenv_values
 from dataclasses import dataclass
@@ -59,6 +59,8 @@ class Post:
     content: str
 
 
+md = Markdown(extensions=["toc"])
+
 for root, dirs, files in content.walk():
     if str(root) == "content/posts/images":
         shutil.copytree(root, "build/posts/images")
@@ -89,7 +91,7 @@ for root, dirs, files in content.walk():
 
             # set as excerpt the first three sentences from the paragraph
             metadata["excerpt"] = ". ".join(sentences[:3]) + "."
-            metadata["content"] = markdown(content)
+            metadata["content"] = md.convert(content.strip())
 
             post = Post(**metadata)
             posts.add(post)
