@@ -1,10 +1,8 @@
 {% extends "components/base.html" %}
 
-
 {% block title_tag %}
 {{ config.SITE_NAME }}
 {% endblock title_tag %}
-
 
 {% block meta %}
 <meta property="og:title" content="{{ config.SITE_NAME }}">
@@ -12,7 +10,6 @@
 <meta property="og:image" content="{{ config.SITE_URL }}/static/android-chrome-256x256.png">
 <link rel="canonical" href="{{ config.SITE_URL }}/">
 {% endblock meta %}
-
 
 {% block content %}
 <div class="posts">
