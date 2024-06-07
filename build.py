@@ -3,7 +3,7 @@ import shutil
 import pathlib
 import logging
 from slugify import slugify
-from markdown import Markdown, markdown
+from markdown import Markdown
 from datetime import datetime
 from dotenv import dotenv_values
 from dataclasses import dataclass
@@ -48,6 +48,15 @@ class Category:
 
 
 @dataclass(frozen=True)
+class Page:
+    title: str
+    date: datetime
+    modified: datetime
+    slug: str
+    content: str
+
+
+@dataclass(frozen=True)
 class Post:
     title: str
     date: datetime
@@ -59,18 +68,50 @@ class Post:
     content: str
 
 
-md = Markdown(extensions=["toc"])
+md = Markdown(extensions=["toc"], output_format="html")
+
+# TODO: when using content.walk() just gather paths
+# later iterate over them to render files because first we need pages
 
 for root, dirs, files in content.walk():
     if str(root) == "content/posts/images":
         shutil.copytree(root, "build/posts/images")
         continue
 
-    if str(root) == "content/posts":
+    elif str(root) == "content/pages":
+        pages = set()
+        for fp in files:
+            page_md = (root / fp).read_text().strip()
+            _, meta, content = page_md.split("---")
+
+            metadata = {}
+            for line in meta.strip().splitlines():
+                key, value = line.split(": ")
+                if key in ["Date", "Modified"]:
+                    value = datetime.strptime(value, "%Y-%m-%d %H:%M")
+                metadata[key.lower()] = value
+
+            metadata["content"] = md.convert(content.strip())
+            page = Page(**metadata)
+            pages.add(page)
+
+        for page in pages:
+            page_template = env.get_template("page.html")
+            parsed_page = page_template.render(
+                page=page,
+                config=cfg,
+            )
+
+            # write the parsed post template to file
+            page_dir_path = pathlib.Path(f"build/pages/{page.slug}")
+            page_dir_path.mkdir(exist_ok=True, parents=True)
+            pathlib.Path(page_dir_path / "index.html").write_text(parsed_page)
+
+    elif str(root) == "content/posts":
         posts, categories = set(), set()
         for fp in files:
-            post_content = (root / fp).read_text().strip()
-            _, meta, content = post_content.split("---")
+            post_md = (root / fp).read_text().strip()
+            _, meta, content = post_md.split("---")
 
             metadata = {}
             for line in meta.strip().splitlines():
@@ -103,8 +144,6 @@ for root, dirs, files in content.walk():
         posts = sorted(posts, key=lambda x: x.date, reverse=True)
 
         for post in posts:
-            # create dir in posts with post.slug name
-            pathlib.Path(f"build/posts/{post.slug}").mkdir(exist_ok=True, parents=True)
             post_template = env.get_template("post.html")
             parsed_post = post_template.render(
                 post=post,
@@ -114,17 +153,20 @@ for root, dirs, files in content.walk():
             )
 
             # write the parsed post template to file
-            pathlib.Path(f"build/posts/{post.slug}/index.html").write_text(parsed_post)
+            post_dir_path = pathlib.Path(f"build/posts/{post.slug}")
+            post_dir_path.mkdir(exist_ok=True, parents=True)
+            pathlib.Path(post_dir_path / "index.html").write_text(parsed_post)
 
 
 # TODO: Copy or move the favicons to root
-# TODO: Pass pages to templates to be used in footer
 
+footer_pages = [page for page in pages if page.title in ["About", "Privacy"]]
+footer_pages = sorted(footer_pages, key=lambda x: x.title)
 # load the `index.html` template
-index_template = env.get_template("home.html")
-parsed_index_template = index_template.render(
-    categories=categories, posts=posts, pages=[], config=cfg
+home_template = env.get_template("home.html")
+parsed_home = home_template.render(
+    categories=categories, posts=posts, pages=footer_pages, config=cfg
 )
 
 # write the parsed template
-pathlib.Path("build/index.html").write_text(parsed_index_template)
+pathlib.Path("build/index.html").write_text(parsed_home)

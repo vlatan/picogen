@@ -1,0 +1,24 @@
+{% extends "components/base.html" %}
+
+{% block title_tag %}
+{{ page.title }}
+{% endblock title_tag %}
+
+{% block meta %}
+<meta property="og:title" content="{{ page.title }}">
+<meta property="og:type" content="article">
+<link rel="canonical" href="{{ config.SITE_URL }}/pages/{{ page.slug }}/">
+{% endblock meta %}
+
+{% block content %}
+<article class="post">
+    <header>
+        <h1 class="post-title">{{ page.title }}</h1>
+        <span class="post-date">
+            <small>{{ page.date.strftime('%a, %b %d, %Y') }}</small>
+        </span>
+    </header>
+
+    {{ page.content | safe }}
+</article>
+{% endblock content %}

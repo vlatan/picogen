@@ -91,13 +91,9 @@
         &copy; 2020. Some rights <a rel="nofollow" href="https://creativecommons.org/licenses/by/3.0/">reserved</a>.
 
         <nav>
-            {% if pages.about %}
-            &#124;&nbsp;<a href="/pages/{{ pages.about.slug }}/">{{ pages.about.title }}</a>
-            {% endif %}
-
-            {% if pages.privacy %}
-            &nbsp;&#124;&nbsp;<a href="/pages/{{ pages.privacy.slug }}/">{{ pages.privacy.title }}</a>
-            {% endif %}
+            {% for page in pages %}
+            &nbsp;&#124;&nbsp;<a href="/pages/{{ page.slug }}/">{{ page.title }}</a>
+            {% endfor %}
 
             {% if config.CONTACT_EMAIL %}
             &nbsp;&#124;&nbsp;<a href="mailto:{{ config.CONTACT_EMAIL }}">Contact</a>
