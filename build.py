@@ -80,14 +80,15 @@ for root, dirs, files in content.walk():
                 metadata[key.lower()] = value
 
             paragraphs = content.strip().split("\n\n")
-            if "/images/" in paragraphs[0]:
-                sentences = paragraphs[1].split(". ")
-                excerpt = ". ".join(sentences[:3]) + "."
-            else:
-                sentences = paragraphs[0].split(". ")
-                excerpt = ". ".join(sentences[:3]) + "."
 
-            metadata["excerpt"] = excerpt
+            sentences = (
+                paragraphs[1].split(". ")
+                if "/images/" in paragraphs[0]
+                else paragraphs[0].split(". ")
+            )
+
+            # set as excerpt the first three sentences from the paragraph
+            metadata["excerpt"] = ". ".join(sentences[:3]) + "."
             metadata["content"] = markdown(content)
 
             post = Post(**metadata)
