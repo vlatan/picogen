@@ -15,32 +15,6 @@ from config import Config
 logging.getLogger().setLevel(logging.INFO)
 
 
-env_vars = {key: value for key, value in dotenv_values(".env").items() if value}
-cfg = Config(**env_vars)
-
-if cfg.THEME == "default":
-    logging.info("Using the default theme.")
-
-templates = pathlib.Path("themes") / cfg.THEME / "templates"
-
-# remove the build directory
-shutil.rmtree(pathlib.Path("build"), ignore_errors=True)
-
-# load theme's templates folder to Jinja's environment
-env = Environment(loader=FileSystemLoader(templates), autoescape=select_autoescape())
-
-static = pathlib.Path("themes") / cfg.THEME / "static"
-if not static.is_dir():
-    raise FileNotFoundError(f"No 'static' directory in your theme: '{static}'.")
-
-# include the static dir in the build
-shutil.copytree(static, "build/static")
-
-content = pathlib.Path("content")
-if not content.is_dir():
-    raise FileNotFoundError(f"No 'content' directory: '{content}'.")
-
-
 @dataclass(frozen=True)
 class Category:
     name: str
@@ -68,105 +42,136 @@ class Post:
     content: str
 
 
-md = Markdown(extensions=["toc"], output_format="html")
+def parse_markdown(path: pathlib.Path) -> dict:
+    """Take post or page markdown filepath and return a dict of necessary data."""
 
-# TODO: when using content.walk() just gather paths
-# later iterate over them to render files because first we need pages
+    md_content = path.read_text().strip()
+    _, meta, content = md_content.split("---")
 
-for root, dirs, files in content.walk():
-    if str(root) == "content/posts/images":
-        shutil.copytree(root, "build/posts/images")
-        continue
+    data = {}
+    for line in meta.strip().splitlines():
+        key, value = line.split(": ")
+        if key in ["Date", "Modified"]:
+            data[key.lower()] = datetime.strptime(value, "%Y-%m-%d %H:%M")
+            continue
 
-    elif str(root) == "content/pages":
-        pages = set()
-        for fp in files:
-            page_md = (root / fp).read_text().strip()
-            _, meta, content = page_md.split("---")
+        if key == "Category":
+            # init Category object
+            data[key.lower()] = Category(name=value, slug=slugify(value))
 
-            metadata = {}
-            for line in meta.strip().splitlines():
-                key, value = line.split(": ")
-                if key in ["Date", "Modified"]:
-                    value = datetime.strptime(value, "%Y-%m-%d %H:%M")
-                metadata[key.lower()] = value
-
-            metadata["content"] = md.convert(content.strip())
-            page = Page(**metadata)
-            pages.add(page)
-
-        for page in pages:
-            page_template = env.get_template("page.html")
-            parsed_page = page_template.render(
-                page=page,
-                config=cfg,
-            )
-
-            # write the parsed post template to file
-            page_dir_path = pathlib.Path(f"build/pages/{page.slug}")
-            page_dir_path.mkdir(exist_ok=True, parents=True)
-            pathlib.Path(page_dir_path / "index.html").write_text(parsed_page)
-
-    elif str(root) == "content/posts":
-        posts, categories = set(), set()
-        for fp in files:
-            post_md = (root / fp).read_text().strip()
-            _, meta, content = post_md.split("---")
-
-            metadata = {}
-            for line in meta.strip().splitlines():
-                key, value = line.split(": ")
-                if key in ["Date", "Modified"]:
-                    value = datetime.strptime(value, "%Y-%m-%d %H:%M")
-                elif key == "Category":
-                    value = Category(name=value, slug=slugify(value))
-                metadata[key.lower()] = value
-
+            # set as excerpt as the first three sentences from the paragraph
             paragraphs = content.strip().split("\n\n")
-
             sentences = (
                 paragraphs[1].split(". ")
                 if "/images/" in paragraphs[0]
                 else paragraphs[0].split(". ")
             )
+            data["excerpt"] = ". ".join(sentences[:3]) + "."
+            continue
 
-            # set as excerpt the first three sentences from the paragraph
-            metadata["excerpt"] = ". ".join(sentences[:3]) + "."
-            metadata["content"] = md.convert(content.strip())
+        data[key.lower()] = value
 
-            post = Post(**metadata)
-            posts.add(post)
-            categories.add(metadata.get("category"))
+    # convert markdown to html
+    data["content"] = md.convert(content.strip())
 
-        # Sort categories alphabetically
-        categories = sorted(categories, key=lambda x: x.name)
-        # sort posts by date
-        posts = sorted(posts, key=lambda x: x.date, reverse=True)
+    return data
 
-        for post in posts:
-            post_template = env.get_template("post.html")
-            parsed_post = post_template.render(
-                post=post,
-                categories=categories,
-                pages=[],
-                config=cfg,
-            )
 
-            # write the parsed post template to file
-            post_dir_path = pathlib.Path(f"build/posts/{post.slug}")
-            post_dir_path.mkdir(exist_ok=True, parents=True)
-            pathlib.Path(post_dir_path / "index.html").write_text(parsed_post)
+def content_walk(path: pathlib.Path) -> dict:
+    """
+    Walk a dir and gather specific filepaths (pages and posts).
+    Also Copy/paste posts/images dir.
+    """
+
+    result = {}
+    for root, dirs, files in path.walk():
+        if str(root) == "content/posts/images":
+            shutil.copytree(root, "build/posts/images")
+            continue
+
+        if str(root) == "content/pages":
+            result["pages_paths"] = [root / fp for fp in files]
+            continue
+
+        if str(root) == "content/posts":
+            result["posts_paths"] = [root / fp for fp in files]
+
+    return result
+
+
+content_path = pathlib.Path("content")
+if not content_path.is_dir():
+    raise FileNotFoundError(f"No 'content' directory: '{content_path}'.")
+
+env_vars = {key: value for key, value in dotenv_values(".env").items() if value}
+cfg = Config(**env_vars)
+
+static_path = pathlib.Path("themes") / cfg.THEME / "static"
+if not static_path.is_dir():
+    raise FileNotFoundError(f"No 'static' directory in your theme: '{static_path}'.")
+
+if cfg.THEME == "default":
+    logging.info("Using the default theme.")
+
+templates = pathlib.Path("themes") / cfg.THEME / "templates"
+
+# load theme's templates folder to Jinja's environment
+jinja_env = Environment(
+    loader=FileSystemLoader(templates), autoescape=select_autoescape()
+)
+jinja_env.globals["config"] = cfg
+
+# remove the build directory
+shutil.rmtree(pathlib.Path("build"), ignore_errors=True)
+# include the static dir in the build
+shutil.copytree(static_path, "build/static")
+
+
+md = Markdown(extensions=["toc"], output_format="html")
 
 
 # TODO: Copy or move the favicons to root
 
-footer_pages = [page for page in pages if page.title in ["About", "Privacy"]]
-footer_pages = sorted(footer_pages, key=lambda x: x.title)
-# load the `index.html` template
-home_template = env.get_template("home.html")
-parsed_home = home_template.render(
-    categories=categories, posts=posts, pages=footer_pages, config=cfg
-)
 
-# write the parsed template
+content_filepaths = content_walk(content_path)
+
+posts, categories = set(), set()
+for post_path in content_filepaths["posts_paths"]:
+    data = parse_markdown(post_path)
+    post = Post(**data)
+    posts.add(post)
+    categories.add(data.get("category"))
+
+pages, footer_pages = set(), set()
+for page_path in content_filepaths["pages_paths"]:
+    data = parse_markdown(page_path)
+    page = Page(**data)
+    if page.title in ["About", "Privacy"]:
+        footer_pages.add(page)
+    pages.add(page)
+
+jinja_env.globals["categories"] = sorted(categories, key=lambda x: x.name)
+jinja_env.globals["footer_pages"] = sorted(footer_pages, key=lambda x: x.title)
+
+for post in posts:
+    post_template = jinja_env.get_template("post.html")
+    parsed_post = post_template.render(post=post)
+    post_dir_path = pathlib.Path(f"build/posts/{post.slug}")
+    post_dir_path.mkdir(exist_ok=True, parents=True)
+    pathlib.Path(post_dir_path / "index.html").write_text(parsed_post)
+
+for page in pages:
+    page_template = jinja_env.get_template("page.html")
+    parsed_page = page_template.render(page=page)
+    page_dir_path = pathlib.Path(f"build/pages/{page.slug}")
+    page_dir_path.mkdir(exist_ok=True, parents=True)
+    pathlib.Path(page_dir_path / "index.html").write_text(parsed_page)
+
+# create homepage
+posts = sorted(posts, key=lambda x: x.date, reverse=True)
+home_template = jinja_env.get_template("home.html")
+parsed_home = home_template.render(posts=posts)
 pathlib.Path("build/index.html").write_text(parsed_home)
+
+# TODO: aotoversion filter
+# TODO: category content pages
