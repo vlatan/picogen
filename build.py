@@ -1,8 +1,11 @@
+import os
 import shutil
 import pathlib
 import logging
+from slugify import slugify
 from markdown import markdown
 from dotenv import dotenv_values
+from dataclasses import dataclass
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from config import Config
@@ -25,13 +28,11 @@ pathlib.Path("build").mkdir(exist_ok=True)
 # load theme's templates folder to Jinja's environment
 env = Environment(loader=FileSystemLoader(templates), autoescape=select_autoescape())
 
-# load the `index.html` template
-index_template = env.get_template("index.html")
-parsed_index_template = index_template.render(title="Hello World", config=cfg)
-
 static = pathlib.Path("themes") / cfg.THEME / "static"
 if not static.is_dir():
     raise FileNotFoundError(f"No 'static' directory in your theme: '{static}'.")
+
+# TODO: Empty the entire build dir
 
 # include the static dir in the build
 try:
@@ -40,7 +41,118 @@ except FileExistsError as err:
     shutil.rmtree("build/static")
     shutil.copytree(static, "build/static")
 
+
+content = pathlib.Path("content")
+if not content.is_dir():
+    raise FileNotFoundError(f"No 'content' directory: '{content}'.")
+
+
+# include the images dir in the build
+def copy_dir(src: os.PathLike | str, dest: os.PathLike | str) -> None:
+    """Copy entire directory to destination"""
+    try:
+        shutil.copytree(src, dest)
+    except FileExistsError:
+        shutil.rmtree(dest)
+        shutil.copytree(src, dest)
+    except FileNotFoundError:
+        pass
+
+
+@dataclass
+class Category:
+    name: str
+    slug: str
+
+
+@dataclass
+class Post:
+    title: str
+    date: str
+    modified: str
+    category: Category
+    image: str
+    slug: str
+    excerpt: str
+    content: str
+
+
+for root, dirs, files in content.walk():
+    if str(root) == "content/images":
+        copy_dir(root, "build/images")
+        continue
+
+    if str(root) == "content/posts":
+        posts, categories = [], []
+        for fp in files:
+            post_content = (root / fp).read_text()
+            _, meta, content = post_content.split("---")
+
+            for item in meta.strip().splitlines():
+                if "Title: " in item:
+                    title = item.split("Title: ")[-1]
+                elif "Date: " in item:
+                    date = item.split("Date: ")[-1]
+                elif "Modified: " in item:
+                    modified = item.split("Modified: ")[-1]
+                elif "Category: " in item:
+                    name = item.split("Category: ")[-1]
+                    category = Category(name=name, slug=slugify(name))
+                elif "Image: " in item:
+                    image = item.split("Image: ")[-1]
+                elif "Slug: " in item:
+                    slug = item.split("Slug: ")[-1]
+
+            paragraphs = content.strip().split("\n\n")
+            if "/images/" in paragraphs[0]:
+                sentences = paragraphs[1].split(". ")
+                excerpt = ". ".join(sentences[:3]) + "."
+            else:
+                sentences = paragraphs[0].split(". ")
+                excerpt = ". ".join(sentences[:3]) + "."
+
+            post = Post(
+                title=title,
+                date=date,
+                modified=modified,
+                category=category,
+                image=image,
+                slug=slug,
+                excerpt=excerpt,
+                content=markdown(content),
+            )
+
+            posts.append(post)
+            categories.append(category)
+
+            # TODO: Sort posts by date
+            # TODO: Sort categories alphabetically
+
+        for post in posts:
+            # create dir in posts with post.slug name
+            pathlib.Path(f"build/posts/{post.slug}").mkdir(exist_ok=True, parents=True)
+            post_template = env.get_template("post.html")
+            parsed_post_template = post_template.render(
+                post=post,
+                categories=categories,
+                pages=[],
+                config=cfg,
+            )
+
+            # write the parsed post template
+            pathlib.Path(f"build/posts/{post.slug}/index.html").write_text(
+                parsed_post_template
+            )
+
+
 # TODO: Copy or move the favicons to root
+# TODO: Pass pages to templates to be used in footer
+
+# load the `index.html` template
+index_template = env.get_template("home.html")
+parsed_index_template = index_template.render(
+    categories=categories, posts=posts, pages=[], config=cfg
+)
 
 # write the parsed template
 pathlib.Path("build/index.html").write_text(parsed_index_template)

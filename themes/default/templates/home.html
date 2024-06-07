@@ -1,13 +1,26 @@
 {% extends "components/base.html" %}
 
 
+{% block title_tag %}
+{{ config.SITE_NAME }}
+{% endblock title_tag %}
+
+
+{% block meta %}
+<meta property="og:title" content="{{ config.SITE_NAME }}">
+<meta property="og:type" content="website">
+<meta property="og:image" content="{{ config.SITE_URL }}/static/android-chrome-256x256.png">
+<link rel="canonical" href="{{ config.SITE_URL }}/">
+{% endblock meta %}
+
+
 {% block content %}
 <div class="posts">
     {% for post in posts %}
     <article class="post">
         <header>
             <h2 class="post-title">
-                <a href="/posts/{{ post.slug }}/">post.title</a>
+                <a href="/posts/{{ post.slug }}/">{{ post.title }}</a>
             </h2>
             <span class="post-date">
                 <small>
@@ -16,7 +29,7 @@
             </span>
         </header>
         {{ post.excerpt }}
-        <small><a href="/posts/{{ post.slug }}/">Read More…</a></small>
+        <small><a href="/posts/{{ post.slug }}/">Read More...</a></small>
     </article>
     {% endfor %}
 </div>
