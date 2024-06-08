@@ -39,6 +39,15 @@ class Post:
     content: str
 
 
+def autoversion_file(url: str) -> str:
+    """Autoversion static files based on mtime."""
+
+    filepath = Path("build/static") / Path(url).name
+    timestamp = round(filepath.stat().st_mtime)
+
+    return f"{url}?v={timestamp}"
+
+
 def parse_markdown_file(path: Path, makrdown_instance: Markdown) -> dict:
     """Take post or page markdown filepath and return a dict of necessary data."""
 
@@ -175,6 +184,7 @@ if __name__ == "__main__":
     loader = jinja.FileSystemLoader(templates_path)
     jinja_env = jinja.Environment(loader=loader, autoescape=jinja.select_autoescape())
     jinja_env.globals["config"] = cfg
+    jinja_env.filters["autoversion"] = autoversion_file
 
     # remove the build directory
     shutil.rmtree(Path("build"), ignore_errors=True)
@@ -190,4 +200,3 @@ if __name__ == "__main__":
 
     # TODO: Copy or move the favicons to root
     # TODO: aotoversion filter
-    # TODO: category pages

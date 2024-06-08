@@ -7,7 +7,7 @@
 {% block meta %}
 <meta property="og:title" content="{{ config.SITE_NAME }}">
 <meta property="og:type" content="website">
-<meta property="og:image" content="{{ config.SITE_URL }}/static/android-chrome-256x256.png">
+<meta property="og:image" content="{{ config.SITE_URL }}{{ '/static/android-chrome-256x256.png' | autoversion }}">
 <link rel="canonical" href="{{ config.SITE_URL }}/">
 {% endblock meta %}
 

@@ -1,11 +1,11 @@
 {% extends "components/base.html" %}
 
 {% block title_tag %}
-{{ config.SITE_NAME }}
+{{ category.name }}
 {% endblock title_tag %}
 
 {% block meta %}
-<meta property="og:title" content="{{ category.title }}">
+<meta property="og:title" content="{{ category.name }}">
 <meta property="og:type" content="website">
 <link rel="canonical" href="{{ config.SITE_URL }}/categories/{{ category.slug }}/">
 {% endblock meta %}
