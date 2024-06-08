@@ -6,11 +6,14 @@
 python build.py && python -m http.server --directory build
 ```
 
+## References:
+- https://jinja.palletsprojects.com/en/3.1.x/
+
+
 ## TODO:
 
-* Design templates.
-* Add static files.
-* Add content.
 * Add maybe CLI for build and serve.
-* Filter func to autoversion static files.
+* Copy favicons to root
+* 404 page
+* Sitemap
 * Pagination?
