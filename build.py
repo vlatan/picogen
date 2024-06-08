@@ -1,12 +1,13 @@
 import shutil
 import logging
+import jinja2 as jinja
 from pathlib import Path
 from slugify import slugify
 from markdown import Markdown
 from datetime import datetime
 from dotenv import dotenv_values
 from dataclasses import dataclass
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from itertools import zip_longest
 
 from config import Config
 
@@ -95,50 +96,53 @@ def content_walk(path: Path) -> tuple[list[Path], list[Path]]:
     return posts_paths, pages_paths
 
 
-def parse_content(posts_paths: list[Path], pages_paths: list[Path]) -> dict[str, set]:
-    """Parse all markdown content."""
+def render_content(
+    posts_paths: list[Path],
+    pages_paths: list[Path],
+    makrdown_instance: Markdown,
+    jinja_env: jinja.Environment,
+) -> None:
+    """Parse and render all markdown content."""
 
-    posts, categories = set(), set()
-    for post_path in posts_paths:
-        data = parse_markdown_file(post_path, md)
-        post = Post(**data)
-        posts.add(post)
-        categories.add(data.get("category"))
+    posts, pages, categories = set(), set(), set()
+    for post_path, page_path in zip_longest(posts_paths, pages_paths):
+        if post_path:
+            data = parse_markdown_file(post_path, makrdown_instance)
+            post = Post(**data)
+            posts.add(post)
+            categories.add(data.get("category"))
 
-    pages, footer_pages = set(), set()
-    for page_path in pages_paths:
-        data = parse_markdown_file(page_path, md)
-        page = Page(**data)
-        if page.title in ["About", "Privacy"]:
-            footer_pages.add(page)
-        pages.add(page)
+        if page_path:
+            data = parse_markdown_file(page_path, makrdown_instance)
+            page = Page(**data)
+            pages.add(page)
 
-    return {
-        "posts": posts,
-        "categories": categories,
-        "pages": pages,
-        "footer_pages": footer_pages,
-    }
+    jinja_env.globals["categories"] = sorted(categories, key=lambda x: x.name)
+    jinja_env.globals["pages"] = sorted(pages, key=lambda x: x.title)
 
+    for post, page, category in zip_longest(posts, pages, categories):
+        if post:
+            post_template = jinja_env.get_template("post.html")
+            parsed_post = post_template.render(post=post)
+            post_dir_path = Path(f"build/posts/{post.slug}")
+            post_dir_path.mkdir(exist_ok=True, parents=True)
+            Path(post_dir_path / "index.html").write_text(parsed_post)
 
-def render_content(posts: set, pages: set, jinja_env: Environment) -> None:
-    """Render all content to files."""
+        if page:
+            page_template = jinja_env.get_template("page.html")
+            parsed_page = page_template.render(page=page)
+            page_dir_path = Path(f"build/pages/{page.slug}")
+            page_dir_path.mkdir(exist_ok=True, parents=True)
+            Path(page_dir_path / "index.html").write_text(parsed_page)
 
-    # render posts
-    for post in posts:
-        post_template = jinja_env.get_template("post.html")
-        parsed_post = post_template.render(post=post)
-        post_dir_path = Path(f"build/posts/{post.slug}")
-        post_dir_path.mkdir(exist_ok=True, parents=True)
-        Path(post_dir_path / "index.html").write_text(parsed_post)
-
-    # render pages
-    for page in pages:
-        page_template = jinja_env.get_template("page.html")
-        parsed_page = page_template.render(page=page)
-        page_dir_path = Path(f"build/pages/{page.slug}")
-        page_dir_path.mkdir(exist_ok=True, parents=True)
-        Path(page_dir_path / "index.html").write_text(parsed_page)
+        if category:
+            cat_posts = [post for post in posts if post.category == category]
+            cat_posts = sorted(cat_posts, key=lambda x: x.date, reverse=True)
+            cat_template = jinja_env.get_template("category.html")
+            parsed_cat = cat_template.render(category=category, posts=cat_posts)
+            cat_dir_path = Path(f"build/categories/{category.slug}")
+            cat_dir_path.mkdir(exist_ok=True, parents=True)
+            Path(cat_dir_path / "index.html").write_text(parsed_cat)
 
     # render homepage
     sorted_posts = sorted(posts, key=lambda x: x.date, reverse=True)
@@ -168,8 +172,8 @@ if __name__ == "__main__":
 
     # load theme's templates folder to Jinja's environment
     templates_path = Path("themes") / cfg.THEME / "templates"
-    loader = FileSystemLoader(templates_path)
-    jinja_env = Environment(loader=loader, autoescape=select_autoescape())
+    loader = jinja.FileSystemLoader(templates_path)
+    jinja_env = jinja.Environment(loader=loader, autoescape=jinja.select_autoescape())
     jinja_env.globals["config"] = cfg
 
     # remove the build directory
@@ -177,20 +181,12 @@ if __name__ == "__main__":
     # include the static dir in the build
     shutil.copytree(static_path, "build/static")
 
-    # create a markdown instance
-    md = Markdown(extensions=["toc"], output_format="html")
-
+    # get posts and pages path in content dir
     posts_paths, pages_paths = content_walk(content_path)
-    parsed_content = parse_content(posts_paths, pages_paths)
-
-    categories = parsed_content["categories"]
-    footer_pages = parsed_content["footer_pages"]
-
-    jinja_env.globals["categories"] = sorted(categories, key=lambda x: x.name)
-    jinja_env.globals["footer_pages"] = sorted(footer_pages, key=lambda x: x.title)
-
-    posts, pages = parsed_content["posts"], parsed_content["pages"]
-    render_content(posts, pages, jinja_env)
+    # create markdown instance
+    md = Markdown(extensions=["toc"], output_format="html")
+    # parse and render all content
+    render_content(posts_paths, pages_paths, md, jinja_env)
 
     # TODO: Copy or move the favicons to root
     # TODO: aotoversion filter
