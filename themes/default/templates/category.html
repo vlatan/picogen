@@ -1,0 +1,27 @@
+{% extends "components/base.html" %}
+
+{% block title_tag %}
+{{ config.SITE_NAME }}
+{% endblock title_tag %}
+
+{% block meta %}
+<meta property="og:title" content="{{ category.title }}">
+<meta property="og:type" content="website">
+<link rel="canonical" href="{{ config.SITE_URL }}/categories/{{ category.slug }}/">
+{% endblock meta %}
+
+{% block content %}
+<h1 class="post-title">{{ category.name }}</h1>
+<ul class="posts post-list">
+    {% for post in posts %}
+    <li>
+        <span>
+            <a href="/posts/{{ post.slug }}/">{{ post.title }}</a> -
+            <small>
+                <time class="pull-right post-list">{{ post.date.strftime('%a, %b %d, %Y') }}</time>
+            </small>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock content %}
