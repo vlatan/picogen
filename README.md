@@ -3,7 +3,8 @@
 ## Build and Serve
 
 ```
-python build.py && python -m http.server --directory build
+python build.py && \
+python -m http.server --directory build --bind localhost
 ```
 
 ## References:
@@ -12,8 +13,8 @@ python build.py && python -m http.server --directory build
 
 ## TODO:
 
-* Add maybe CLI for build and serve.
+* robots.txt
+* sitemap.xml
 * Copy favicons to root
-* 404 page
-* Sitemap
+* Add maybe CLI for build and serve.
 * Pagination?

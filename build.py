@@ -159,6 +159,14 @@ def render_content(
     parsed_home = home_template.render(posts=sorted_posts)
     Path("build/index.html").write_text(parsed_home)
 
+    # render 404 page
+    not_found_template = jinja_env.get_template("404.html")
+    parsed_not_found = not_found_template.render()
+    Path("build/404.html").write_text(parsed_not_found)
+
+    # TODO: Render robots.txt
+    # TODO: Render sitemap.xml
+
 
 if __name__ == "__main__":
 
@@ -199,4 +207,3 @@ if __name__ == "__main__":
     render_content(posts_paths, pages_paths, md, jinja_env)
 
     # TODO: Copy or move the favicons to root
-    # TODO: aotoversion filter
