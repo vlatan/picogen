@@ -51,3 +51,8 @@ python -m http.server --directory build --bind localhost
 * Copy favicons to root
 * Add maybe CLI for build and serve.
 * Pagination?
+
+
+## License
+
+[![License: MIT](https://img.shields.io/github/license/vlatan/nanogen?label=License)](/LICENSE "License: MIT")
