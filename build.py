@@ -42,7 +42,7 @@ class Post:
 def autoversion_file(url: str) -> str:
     """Autoversion static files based on mtime."""
 
-    filepath = Path("build/static") / Path(url).name
+    filepath = Path(f"build{url}")
     timestamp = round(filepath.stat().st_mtime)
 
     return f"{url}?v={timestamp}"

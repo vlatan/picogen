@@ -12,8 +12,8 @@
         {% endblock title_tag %}
     </title>
 
-    <link rel="preload" href="{{ '/static/style.css' | autoversion }}" as="style">
-    <link rel="stylesheet" type="text/css" href="{{ '/static/style.css' | autoversion }}">
+    <link rel="preload" href="{{ '/static/css/style.css' | autoversion }}" as="style">
+    <link rel="stylesheet" type="text/css" href="{{ '/static/css/style.css' | autoversion }}">
 
     {% block meta %}
     {% endblock meta %}
@@ -21,11 +21,11 @@
     <meta property="og:site_name" content="{{ config.SITE_NAME }}">
     <meta property="og:type" content="website">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ '/static/apple-touch-icon.png' | autoversion }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ '/static/favicon-32x32.png' | autoversion }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ '/static/favicon-16x16.png' | autoversion }}">
-    <link rel="manifest" href="{{ '/static/manifest.json' | autoversion }}">
-    <link rel="mask-icon" color="#5bbad5" href="{{ '/static/safari-pinned-tab.svg' | autoversion }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ '/static/images/apple-touch-icon.png' | autoversion }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ '/static/images/favicon-32x32.png' | autoversion }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ '/static/images/favicon-16x16.png' | autoversion }}">
+    <link rel="manifest" href="{{ '/static/images/manifest.json' | autoversion }}">
+    <link rel="mask-icon" color="#5bbad5" href="{{ '/static/images/safari-pinned-tab.svg' | autoversion }}">
     <meta name="theme-color" content="#ffffff">
 
     {% if config.GTAG_ID %}
