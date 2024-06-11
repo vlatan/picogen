@@ -1,7 +1,6 @@
 # Nanogen
 
-
-A very simple static website generator that uses [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) under the hood to generate your content.
+A very simple static website generator that uses [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) to generate your content.
 
 
 ## Prerequisites
@@ -9,7 +8,7 @@ A very simple static website generator that uses [Jinja](https://jinja.palletspr
 * Create an `.env` file, as described in `example.env`
 * Create a `content` directory
 
-If you are using your own theme it must follow the following structure:
+If you are using your own theme use the following structure. You can include aditional templates that extend or use these.
 
 ```
 ├── static
@@ -25,7 +24,7 @@ If you are using your own theme it must follow the following structure:
     └── sitemap.xml             // sitemap
 ```
 
-* Variables `posts`, `pages` and `categories` are made available in all `jinja` templates.
+* Variables `posts`, `pages` and `categories` are made available to all `jinja` templates.
 * Additionaly, single `post`, `page` and `category` variables are available in templates with the same names respectively.
 
 
