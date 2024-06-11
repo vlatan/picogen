@@ -48,6 +48,7 @@ python -m http.server --directory build --bind localhost
 
 
 ## TODO:
+* Include content writing guidilines
 * Copy favicons to root
 * Add maybe CLI for build and serve.
 * Pagination?
