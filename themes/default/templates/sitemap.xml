@@ -1,0 +1,30 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+<url>
+<loc>{{ config.SITE_URL }}/</loc>
+<lastmod>{{ (posts|first).date.strftime("%Y-%m-%d") }}</lastmod>
+</url>
+
+{% for post in posts %}
+<url>
+<loc>{{ config.SITE_URL }}/posts/{{ post.slug }}/</loc>
+<lastmod>{{ post.modified.strftime("%Y-%m-%d") }}</lastmod>
+</url>
+{% endfor %}
+
+{% for page in pages %}
+<url>
+<loc>{{ config.SITE_URL }}/pages/{{ page.slug }}/</loc>
+<lastmod>{{ page.modified.strftime("%Y-%m-%d") }}</lastmod>
+</url>
+{% endfor %}
+
+{% for category in categories %}
+{% set cat_post = posts|selectattr("category", "equalto", category)|first %}
+<url>
+<loc>{{ config.SITE_URL }}/category/{{ category.slug }}/</loc>
+<lastmod>{{ cat_post.date.strftime("%Y-%m-%d") }}</lastmod>
+</url>
+{% endfor %}
+
+</urlset>

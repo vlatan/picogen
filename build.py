@@ -169,7 +169,10 @@ def render_content(
     parsed_robots = robots_template.render()
     Path("build/robots.txt").write_text(parsed_robots)
 
-    # TODO: Render sitemap.xml
+    # render sitemap.xml
+    sitemap_template = jinja_env.get_template("sitemap.xml")
+    parsed_sitemap = sitemap_template.render(posts=sorted_posts)
+    Path("build/sitemap.xml").write_text(parsed_sitemap)
 
 
 if __name__ == "__main__":
@@ -194,7 +197,12 @@ if __name__ == "__main__":
     # load theme's templates folder to Jinja's environment
     templates_path = Path("themes") / cfg.THEME / "templates"
     loader = jinja.FileSystemLoader(templates_path)
-    jinja_env = jinja.Environment(loader=loader, autoescape=jinja.select_autoescape())
+    jinja_env = jinja.Environment(
+        trim_blocks=True,
+        lstrip_blocks=True,
+        autoescape=jinja.select_autoescape(),
+        loader=loader,
+    )
     jinja_env.globals["config"] = cfg
     jinja_env.filters["autoversion"] = autoversion_file
 
