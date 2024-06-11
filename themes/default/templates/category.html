@@ -13,7 +13,8 @@
 {% block content %}
 <h1 class="post-title">{{ category.name }}</h1>
 <ul class="posts post-list">
-    {% for post in posts %}
+    {% set cat_posts = posts|selectattr("category", "equalto", category) %}
+    {% for post in cat_posts %}
     <li>
         <span>
             <a href="/posts/{{ post.slug }}/">{{ post.title }}</a> -

@@ -126,8 +126,9 @@ def render_content(
             page = Page(**data)
             pages.add(page)
 
-    jinja_env.globals["categories"] = sorted(categories, key=lambda x: x.name)
+    jinja_env.globals["posts"] = sorted(posts, key=lambda x: x.date)
     jinja_env.globals["pages"] = sorted(pages, key=lambda x: x.title)
+    jinja_env.globals["categories"] = sorted(categories, key=lambda x: x.name)
 
     for post, page, category in zip_longest(posts, pages, categories):
         if post:
@@ -145,18 +146,15 @@ def render_content(
             Path(page_dir_path / "index.html").write_text(parsed_page)
 
         if category:
-            cat_posts = [post for post in posts if post.category == category]
-            cat_posts = sorted(cat_posts, key=lambda x: x.date, reverse=True)
             cat_template = jinja_env.get_template("category.html")
-            parsed_cat = cat_template.render(category=category, posts=cat_posts)
+            parsed_cat = cat_template.render(category=category)
             cat_dir_path = Path(f"build/categories/{category.slug}")
             cat_dir_path.mkdir(exist_ok=True, parents=True)
             Path(cat_dir_path / "index.html").write_text(parsed_cat)
 
     # render homepage
-    sorted_posts = sorted(posts, key=lambda x: x.date, reverse=True)
     home_template = jinja_env.get_template("home.html")
-    parsed_home = home_template.render(posts=sorted_posts)
+    parsed_home = home_template.render()
     Path("build/index.html").write_text(parsed_home)
 
     # render 404 page
@@ -171,7 +169,7 @@ def render_content(
 
     # render sitemap.xml
     sitemap_template = jinja_env.get_template("sitemap.xml")
-    parsed_sitemap = sitemap_template.render(posts=sorted_posts)
+    parsed_sitemap = sitemap_template.render()
     Path("build/sitemap.xml").write_text(parsed_sitemap)
 
 
