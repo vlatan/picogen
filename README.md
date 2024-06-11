@@ -18,15 +18,15 @@ If you are using your own theme it must follow the following structure:
 └── templates
     ├── home.html               // homepage
     ├── post.html               // each article
-    ├── category.html           // each category
     ├── page.html               // each page
+    ├── category.html           // each category
     ├── 404.html                // 404 page
     ├── robots.txt              // robots file
     └── sitemap.xml             // sitemap
 ```
 
-Variables `posts`, `pages` and `categories` are made available in all `jinja` templates.
-Additionaly, single `post`, `page` and `category` variables are available in templates with the same names respectively.
+* Variables `posts`, `pages` and `categories` are made available in all `jinja` templates.
+* Additionaly, single `post`, `page` and `category` variables are available in templates with the same names respectively.
 
 
 ## Build and Serve

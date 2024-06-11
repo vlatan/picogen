@@ -95,6 +95,10 @@ def content_walk(path: Path) -> tuple[list[Path], list[Path]]:
             shutil.copytree(root, "build/posts/images")
             continue
 
+        if str(root) == "content/pages/images":
+            shutil.copytree(root, "build/posts/images")
+            continue
+
         if str(root) == "content/pages":
             pages_paths = [root / fp for fp in files]
             continue
