@@ -164,7 +164,11 @@ def render_content(
     parsed_not_found = not_found_template.render()
     Path("build/404.html").write_text(parsed_not_found)
 
-    # TODO: Render robots.txt
+    # render robots.txt
+    robots_template = jinja_env.get_template("robots.txt")
+    parsed_robots = robots_template.render()
+    Path("build/robots.txt").write_text(parsed_robots)
+
     # TODO: Render sitemap.xml
 
 
