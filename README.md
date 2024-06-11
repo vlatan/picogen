@@ -27,7 +27,6 @@ python -m http.server --directory build --bind localhost
 
 ## TODO:
 
-* sitemap.xml
 * Copy favicons to root
 * Add maybe CLI for build and serve.
 * Pagination?
