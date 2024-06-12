@@ -5,35 +5,33 @@ A very simple static website generator that uses [Jinja](https://jinja.palletspr
 
 ## Prerequisites
 
-* Create/activate virtual environment and install the dependencies.
-    ``` bash
-    python3 -m venv .venv &&
-    source .venv/bin/activate &&
-    pip install --upgrade pip &&
-    pip install -r requirements.txt
-    ```
+Create/activate virtual environment and install the dependencies.
 
-* Create an `.env` file, as described in `example.env`
-* Create a `content` directory
-* If you are using your own theme use the following structure. You can include aditional templates that extend or use these.
+``` bash
+python3 -m venv .venv &&
+source .venv/bin/activate &&
+pip install --upgrade pip &&
+pip install -r requirements.txt
+```
 
-    ```
-    ├── static
-    │   ├── css
-    │   ├── favicons
-    │   └── images
-    └── templates
-        ├── home.html               // homepage
-        ├── post.html               // each article
-        ├── page.html               // each page
-        ├── category.html           // each category
-        ├── 404.html                // 404 page
-        ├── robots.txt              // robots file
-        └── sitemap.xml             // sitemap
-    ```
+Create an `.env` file, as described in [example.env](example.env). Create a `content` directory. If you are using your own theme use the following structure. You can include aditional templates that extend or use these.
 
-* Variables `posts`, `pages` and `categories` that contain all posts, pages and categories are made available to all `jinja` templates.
-* Additionaly, single `post`, `page` and `category` variables are available in templates with the same names respectively.
+```
+├── static
+│   ├── css
+│   ├── favicons
+│   └── images
+└── templates
+    ├── home.html       // homepage
+    ├── post.html       // each article
+    ├── page.html       // each page
+    ├── category.html   // each category
+    ├── 404.html        // 404 page
+    ├── robots.txt      // robots file
+    └── sitemap.xml     // sitemap
+```
+
+Variables `posts`, `pages` and `categories` that contain all posts, pages and categories are made available to all `jinja` templates. Additionaly, single `post`, `page` and `category` variables are available in templates with the same names respectively.
 
 
 ## Writing Content
@@ -65,7 +63,7 @@ Slug: example-url-slug
 
 ## Build and Serve
 
-```
+``` bash
 python build.py && \
 python -m http.server --directory build --bind localhost
 ```
