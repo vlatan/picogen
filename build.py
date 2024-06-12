@@ -130,7 +130,7 @@ def render_content(
             page = Page(**data)
             pages.add(page)
 
-    jinja_env.globals["posts"] = sorted(posts, key=lambda x: x.date)
+    jinja_env.globals["posts"] = sorted(posts, key=lambda x: x.date, reverse=True)
     jinja_env.globals["pages"] = sorted(pages, key=lambda x: x.title)
     jinja_env.globals["categories"] = sorted(categories, key=lambda x: x.name)
 
@@ -172,9 +172,17 @@ def render_content(
     Path("build/robots.txt").write_text(parsed_robots)
 
     # render sitemap.xml
-    sitemap_template = jinja_env.get_template("sitemap.xml")
-    parsed_sitemap = sitemap_template.render()
-    Path("build/sitemap.xml").write_text(parsed_sitemap)
+    xml_template = jinja_env.get_template("sitemap.xml")
+    parsed_xml = xml_template.render()
+    Path("build/sitemap.xml").write_text(parsed_xml)
+
+    # try to render sitemap.xsl
+    try:
+        xsl_template = jinja_env.get_template("sitemap.xsl")
+        parsed_xsl = xsl_template.render()
+        Path("build/sitemap.xsl").write_text(parsed_xsl)
+    except jinja.exceptions.TemplateNotFound:
+        pass
 
 
 if __name__ == "__main__":

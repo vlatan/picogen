@@ -14,7 +14,7 @@ pip install --upgrade pip &&
 pip install -r requirements.txt
 ```
 
-Create an `.env` file, as described in [example.env](example.env). Create a `content` directory. If you are using your own theme use the following structure. You can include aditional templates that extend or use these.
+Create an `.env` file, as described in [example.env](example.env). Create a `content` directory. If you are using your own theme use the following structure. Note, Inclusion of `sitemap.xsl` is optional. You can also include aditional templates that extend or use these.
 
 ```
 ├── static
@@ -28,7 +28,8 @@ Create an `.env` file, as described in [example.env](example.env). Create a `con
     ├── category.html   // each category
     ├── 404.html        // 404 page
     ├── robots.txt      // robots file
-    └── sitemap.xml     // sitemap
+    ├── sitemap.xml     // sitemap xml file
+    └── sitemap.xsl     // sitemap xsl file (optional)
 ```
 
 During the build, all the files in the `static/favicons` directory will be copied over to the root of the build too.
