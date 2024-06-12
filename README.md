@@ -31,6 +31,8 @@ Create an `.env` file, as described in [example.env](example.env). Create a `con
     └── sitemap.xml     // sitemap
 ```
 
+During the build, all the files in the `static/favicons` directory will be copied over to the root of the build too.
+
 Variables `posts`, `pages` and `categories` that contain all posts, pages and categories are made available to all `jinja` templates. Additionaly, single `post`, `page` and `category` variables are available in templates with the same names respectively.
 
 
@@ -67,6 +69,8 @@ Slug: example-url-slug
 python build.py && \
 python -m http.server --directory build --bind localhost
 ```
+
+The static site files and directories are generated within the `build` directory.
 
 
 ## References:
