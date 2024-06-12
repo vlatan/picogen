@@ -34,7 +34,7 @@ Create an `.env` file, as described in [example.env](example.env). Create a `con
 
 During the build, all the files in the `static/favicons` directory will be copied over to the root of the build too.
 
-Variables `posts`, `pages` and `categories` that contain all posts, pages and categories are made available to all `jinja` templates. Additionaly, single `post`, `page` and `category` variables are available in templates with the same names respectively.
+The `config` variable that containes the values from your `.env` file is available to all `jinja` templates. Also variables `posts`, `pages` and `categories` that contain all posts, pages and categories are available to all `jinja` templates. Additionaly, single `post`, `page` and `category` variables are available to the templates with the same names respectively.
 
 
 ## Writing Content
