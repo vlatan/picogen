@@ -164,12 +164,14 @@ pre code {
     background-color: transparent
 }
 
-.highlight {
+.codehilite {
     margin-bottom: 1.5rem;
-    border-radius: 4px
+    border-radius: 4px;
+    color: #f8f8f2;
+    background-color: #272822;
 }
 
-.highlight pre {
+.codehilite pre {
     margin-bottom: 0
 }
 
@@ -518,24 +520,19 @@ a.pagination-item:hover {
     background-color: #555
 }
 
-.chroma {
-    color: #f8f8f2;
-    background-color: #272822
-}
-
-.chroma .err {
+.codehilite .err {
     color: #960050;
     background-color: #1e0010
 }
 
-.chroma .lntd {
+.codehilite .lntd {
     vertical-align: top;
     padding: 0;
     margin: 0;
     border: 0
 }
 
-.chroma .lntable {
+.codehilite .lntable {
     border-spacing: 0;
     padding: 0;
     margin: 0;
@@ -545,226 +542,226 @@ a.pagination-item:hover {
     display: block
 }
 
-.chroma .hl {
+.codehilite .hl {
     display: block;
     width: 100%;
     background-color: #ffc
 }
 
-.chroma .lnt {
+.codehilite .lnt {
     margin-right: .4em;
     padding: 0 .4em 0 .4em
 }
 
-.chroma .ln {
+.codehilite .ln {
     margin-right: .4em;
     padding: 0 .4em 0 .4em
 }
 
-.chroma .k {
+.codehilite .k {
     color: #66d9ef
 }
 
-.chroma .kc {
+.codehilite .kc {
     color: #66d9ef
 }
 
-.chroma .kd {
+.codehilite .kd {
     color: #66d9ef
 }
 
-.chroma .kn {
+.codehilite .kn {
     color: #f92672
 }
 
-.chroma .kp {
+.codehilite .kp {
     color: #66d9ef
 }
 
-.chroma .kr {
+.codehilite .kr {
     color: #66d9ef
 }
 
-.chroma .kt {
+.codehilite .kt {
     color: #66d9ef
 }
 
-.chroma .na {
+.codehilite .na {
     color: #a6e22e
 }
 
-.chroma .nc {
+.codehilite .nc {
     color: #a6e22e
 }
 
-.chroma .no {
+.codehilite .no {
     color: #66d9ef
 }
 
-.chroma .nd {
+.codehilite .nd {
     color: #a6e22e
 }
 
-.chroma .ne {
+.codehilite .ne {
     color: #a6e22e
 }
 
-.chroma .nf {
+.codehilite .nf {
     color: #a6e22e
 }
 
-.chroma .nx {
+.codehilite .nx {
     color: #a6e22e
 }
 
-.chroma .nt {
+.codehilite .nt {
     color: #f92672
 }
 
-.chroma .l {
+.codehilite .l {
     color: #ae81ff
 }
 
-.chroma .ld {
+.codehilite .ld {
     color: #e6db74
 }
 
-.chroma .s {
+.codehilite .s {
     color: #e6db74
 }
 
-.chroma .sa {
+.codehilite .sa {
     color: #e6db74
 }
 
-.chroma .sb {
+.codehilite .sb {
     color: #e6db74
 }
 
-.chroma .sc {
+.codehilite .sc {
     color: #e6db74
 }
 
-.chroma .dl {
+.codehilite .dl {
     color: #e6db74
 }
 
-.chroma .sd {
+.codehilite .sd {
     color: #e6db74
 }
 
-.chroma .s2 {
+.codehilite .s2 {
     color: #e6db74
 }
 
-.chroma .se {
+.codehilite .se {
     color: #ae81ff
 }
 
-.chroma .sh {
+.codehilite .sh {
     color: #e6db74
 }
 
-.chroma .si {
+.codehilite .si {
     color: #e6db74
 }
 
-.chroma .sx {
+.codehilite .sx {
     color: #e6db74
 }
 
-.chroma .sr {
+.codehilite .sr {
     color: #e6db74
 }
 
-.chroma .s1 {
+.codehilite .s1 {
     color: #e6db74
 }
 
-.chroma .ss {
+.codehilite .ss {
     color: #e6db74
 }
 
-.chroma .m {
+.codehilite .m {
     color: #ae81ff
 }
 
-.chroma .mb {
+.codehilite .mb {
     color: #ae81ff
 }
 
-.chroma .mf {
+.codehilite .mf {
     color: #ae81ff
 }
 
-.chroma .mh {
+.codehilite .mh {
     color: #ae81ff
 }
 
-.chroma .mi {
+.codehilite .mi {
     color: #ae81ff
 }
 
-.chroma .il {
+.codehilite .il {
     color: #ae81ff
 }
 
-.chroma .mo {
+.codehilite .mo {
     color: #ae81ff
 }
 
-.chroma .o {
+.codehilite .o {
     color: #f92672
 }
 
-.chroma .ow {
+.codehilite .ow {
     color: #f92672
 }
 
-.chroma .c {
+.codehilite .c {
     color: #75715e
 }
 
-.chroma .ch {
+.codehilite .ch {
     color: #75715e
 }
 
-.chroma .cm {
+.codehilite .cm {
     color: #75715e
 }
 
-.chroma .c1 {
+.codehilite .c1 {
     color: #75715e
 }
 
-.chroma .cs {
+.codehilite .cs {
     color: #75715e
 }
 
-.chroma .cp {
+.codehilite .cp {
     color: #75715e
 }
 
-.chroma .cpf {
+.codehilite .cpf {
     color: #75715e
 }
 
-.chroma .gd {
+.codehilite .gd {
     color: #f92672
 }
 
-.chroma .ge {
+.codehilite .ge {
     font-style: italic
 }
 
-.chroma .gi {
+.codehilite .gi {
     color: #a6e22e
 }
 
-.chroma .gs {
+.codehilite .gs {
     font-weight: 700
 }
 
-.chroma .gu {
+.codehilite .gu {
     color: #75715e
 }

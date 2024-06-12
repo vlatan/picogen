@@ -226,6 +226,6 @@ if __name__ == "__main__":
     # get posts and pages path in content dir
     posts_paths, pages_paths = content_walk(content_path)
     # create markdown instance
-    md = Markdown(extensions=["toc"], output_format="html")
+    md = Markdown(extensions=["toc", "codehilite", "extra"], output_format="html")
     # parse and render all content
     render_content(posts_paths, pages_paths, md, jinja_env)
