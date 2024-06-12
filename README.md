@@ -20,6 +20,7 @@ A very simple static website generator that uses [Jinja](https://jinja.palletspr
     ```
     ├── static
     │   ├── css
+    │   ├── favicons
     │   └── images
     └── templates
         ├── home.html               // homepage
@@ -31,8 +32,35 @@ A very simple static website generator that uses [Jinja](https://jinja.palletspr
         └── sitemap.xml             // sitemap
     ```
 
-* Variables `posts`, `pages` and `categories` are made available to all `jinja` templates.
+* Variables `posts`, `pages` and `categories` that contain all posts, pages and categories are made available to all `jinja` templates.
 * Additionaly, single `post`, `page` and `category` variables are available in templates with the same names respectively.
+
+
+## Writing Content
+
+Place your posts markdown files in a `posts` directory and your pages in the `pages` directory within the content directory. Include `images` directories within them if necessary.
+
+```
+├── posts
+│   ├── post.md
+│   └── images
+└── pages
+    ├── page.md
+    └── images
+```
+
+
+Every markdown file at the top needs to have a **metadata** section wrapped with `---`. The code will look for this section in each file and will warn you if something is missing. For example here's a post metadata:
+```
+---
+Title: Here Goes the Title
+Date: 2017-10-30 10:20
+Modified: 2017-10-30 10:20
+Category: Here Goes the Category
+Image: /path/to/image.jpg
+Slug: example-url-slug
+---
+```
 
 
 ## Build and Serve
@@ -48,10 +76,8 @@ python -m http.server --directory build --bind localhost
 
 
 ## TODO:
-* Include content writing guidilines
-* Copy favicons to root
 * Add maybe CLI for build and serve.
-* Pagination?
+* Pagination
 
 
 ## License

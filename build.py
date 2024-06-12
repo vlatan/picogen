@@ -212,6 +212,8 @@ if __name__ == "__main__":
     shutil.rmtree(Path("build"), ignore_errors=True)
     # include the static dir in the build
     shutil.copytree(static_path, "build/static")
+    # include the favicons in the root dir too
+    shutil.copytree(static_path / "favicons", "build", dirs_exist_ok=True)
 
     # get posts and pages path in content dir
     posts_paths, pages_paths = content_walk(content_path)
@@ -219,5 +221,3 @@ if __name__ == "__main__":
     md = Markdown(extensions=["toc"], output_format="html")
     # parse and render all content
     render_content(posts_paths, pages_paths, md, jinja_env)
-
-    # TODO: Copy or move the favicons to root
