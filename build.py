@@ -96,7 +96,7 @@ def content_walk(path: Path) -> tuple[list[Path], list[Path]]:
             continue
 
         if str(root) == "content/pages/images":
-            shutil.copytree(root, "build/posts/images")
+            shutil.copytree(root, "build/pages/images")
             continue
 
         if str(root) == "content/pages":
