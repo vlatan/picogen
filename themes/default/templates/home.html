@@ -26,8 +26,10 @@
                 </small>
             </span>
         </header>
-        {{ post.excerpt }}
-        <small><a href="/posts/{{ post.slug }}/">Read More...</a></small>
+        <div class="article-content">
+            {{ post.excerpt }}
+            <small><a href="/posts/{{ post.slug }}/">Read More...</a></small>
+        </div>
     </article>
     {% endfor %}
 </div>

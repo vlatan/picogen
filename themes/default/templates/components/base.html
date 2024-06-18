@@ -12,8 +12,8 @@
         {% endblock title_tag %}
     </title>
 
-    <link rel="preload" href="{{ '/static/css/style.css' | autoversion }}" as="style">
-    <link rel="stylesheet" type="text/css" href="{{ '/static/css/style.css' | autoversion }}">
+    <link rel="preload" href="{{ '/static/css/test.css' | autoversion }}" as="style">
+    <link rel="stylesheet" type="text/css" href="{{ '/static/css/test.css' | autoversion }}">
 
     {% block meta %}
     {% endblock meta %}
@@ -35,75 +35,59 @@
 </head>
 
 <body class="top">
-    <aside class="sidebar">
-        <div class="container">
+    <div class="page-wrap">
+        <div class="header-wrap">
+            <header class="primary-header">
+                {% if title %}
+                <h2><a href="/">{{ config.SITE_NAME }}</a></h2>
+                {% else %}
+                <h1><a href="/">{{ config.SITE_NAME }}</a></h1>
+                {% endif %}
+                <!-- <span class="lead">{{ config.SITE_TAGLINE }}.</span> -->
 
-            <header class="sidebar-about">
-                <a href="/">
-                    {% if title %}
-                    <h2>{{ config.SITE_NAME }}</h2>
-                    {% else %}
-                    <h1>{{ config.SITE_NAME }}</h1>
-                    {% endif %}
-                </a>
-                <p class="lead">{{ config.SITE_TAGLINE }}.</p>
+
+                <nav class="primary-nav">
+                    <ul role="list" class="nav-list">
+                        {% for category in categories %}
+                        <li><a href="/categories/{{ category.slug }}/">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </nav>
             </header>
-
-            <nav>
-                <ul class="sidebar-nav">
-                    {% for category in categories %}
-                    <li><a href="/categories/{{ category.slug }}/">{{ category.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </nav>
-
-            <div class="logo">
-                <a title="{{ config.SITE_NAME }}" href="/">
-                    <svg viewBox="0 0 181 181">
-                        <g>
-                            <circle fill="none" stroke="#000" stroke-width="5.5" stroke-miterlimit="10" cx="90"
-                                cy="90.9" r="86.9" />
-                            <g>
-                                <polyline fill="none" stroke="#000" stroke-width="5.5" stroke-linecap="square"
-                                    stroke-linejoin="round" stroke-miterlimit="4.48"
-                                    points="113.5,71 133.8,91.2 133.8,91.2 113.5,111.4" />
-                                <polyline fill="none" stroke="#000" stroke-width="5.5" stroke-linecap="square"
-                                    stroke-linejoin="round" stroke-miterlimit="4.48"
-                                    points="66.4,71 46.2,91.2 46.2,91.2 66.4,111.4" />
-                                <line fill="none" stroke="#000" stroke-width="5.5" stroke-miterlimit="10" x1="81.8"
-                                    y1="121.2" x2="98.1" y2="60.6" />
-                            </g>
-                        </g>
-                    </svg>
-                </a>
-            </div>
-
         </div>
-    </aside>
 
-    <div class="content container">
-        {% block content %}
-        {% endblock content %}
+        <main class="main-content">
+            <div class="content container">
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </main>
+
+        <div class="footer-wrap">
+            <footer class="primary-footer">
+                Hosted on <a rel="nofollow" href="https://aws.amazon.com/">AWS</a>.
+                &copy; 2020. Some rights <a rel="nofollow"
+                    href="https://creativecommons.org/licenses/by/3.0/">reserved</a>.
+
+                <nav class="secondary-nav">
+                    <ul role="list" class="footer-list">
+                        {% for page in pages %}
+                        {% if page.title == "About" %}
+                        <li><a href="/pages/{{ page.slug }}/">{{ page.title }}</a></li>
+                        {% elif page.title == "Privacy" %}
+                        <li><a href="/pages/{{ page.slug }}/">{{ page.title }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if config.CONTACT_EMAIL %}
+                        <li><a href="mailto:{{ config.CONTACT_EMAIL }}">Contact</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </footer>
+        </div>
     </div>
 
-    <div class="credits">
-        Hosted on <a rel="nofollow" href="https://aws.amazon.com/">AWS</a>.
-        &copy; 2020. Some rights <a rel="nofollow" href="https://creativecommons.org/licenses/by/3.0/">reserved</a>.
-
-        <nav>
-            {% for page in pages %}
-            {% if page.title == "About" %}
-            &nbsp;&#124;&nbsp;<a href="/pages/{{ page.slug }}/">{{ page.title }}</a>
-            {% elif page.title == "Privacy" %}
-            &nbsp;&#124;&nbsp;<a href="/pages/{{ page.slug }}/">{{ page.title }}</a>
-            {% endif %}
-            {% endfor %}
-
-            {% if config.CONTACT_EMAIL %}
-            &nbsp;&#124;&nbsp;<a href="mailto:{{ config.CONTACT_EMAIL }}">Contact</a>
-            {% endif %}
-        </nav>
-    </div>
 
     <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
     <script>function scrollFunction() { document.body.scrollTop > 200 || document.documentElement.scrollTop > 200 ? document.getElementById("myBtn").style.display = "block" : document.getElementById("myBtn").style.display = "none" } function topFunction() { document.body.scrollTop = 0, document.documentElement.scrollTop = 0 } window.onscroll = function () { scrollFunction() };</script>

@@ -22,6 +22,8 @@
         </span>
     </header>
 
-    {{ post.content | safe }}
+    <div class="article-content">
+        {{ post.content | safe }}
+    </div>
 </article>
 {% endblock content %}
