@@ -22,7 +22,7 @@
             <span class="post-date">
                 <small>
                     <a href="/categories/{{ post.category.slug }}/">{{ post.category.name }}</a> -
-                    {{ post.date.strftime('%a, %b %d, %Y') }}
+                    <time datetime="{{ post.date }}">{{ post.date.strftime('%a, %b %d, %Y') }}</time>
                 </small>
             </span>
         </header>

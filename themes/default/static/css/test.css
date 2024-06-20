@@ -1,5 +1,5 @@
 :root {
-    --gap: 1.75rem;
+    --gap: 2rem;
     --max-site-width: 750px;
 }
 
@@ -84,7 +84,7 @@ h6 {
 /* ##################### Basics ##################### */
 
 html {
-    font-size: 1.25em;
+    font-size: 1.2em;
     font-family: system-ui, sans-serif;
 }
 
@@ -139,8 +139,8 @@ body {
 }
 
 header.primary-header {
-    max-width: min(var(--max-site-width), 100% - (2 * var(--gap)));
-    margin: auto;
+    width: min(var(--max-site-width), 100% - (2 * var(--gap)));
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -161,13 +161,22 @@ ul.nav-list {
 }
 
 ul.nav-list a {
+    font-size: 0.85rem;
     color: #313131;
     text-transform: uppercase;
 }
 
+.content,
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}
+
 main.main-content {
-    max-width: min(var(--max-site-width), 100% - (2 * var(--gap)));
-    margin: auto;
+    width: min(var(--max-site-width), 100% - (2 * var(--gap)));
+    margin: 0 auto;
 }
 
 .posts,
@@ -189,10 +198,20 @@ main.main-content {
     gap: calc(var(--gap) / 4);
 }
 
-.post header h1 {
+h1.post-title {
     font-size: clamp(2rem, 1rem + 5vw, 4rem);
     font-weight: 900;
     color: #255b98
+}
+
+.post-date {
+    color: #999;
+}
+
+.post-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
 .article-content>* {
@@ -213,8 +232,52 @@ main.main-content {
 }
 
 footer.primary-footer {
-    max-width: min(var(--max-site-width), 100% - (2 * var(--gap)));
-    margin: auto;
+    width: min(var(--max-site-width), 100% - (2 * var(--gap)));
+    margin: 0 auto;
+    font-size: 0.75rem;
+}
+
+nav.secondary-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ul.footer-list {
+    display: flex;
+    gap: calc(var(--gap) / 4);
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.footer-list a {
+    font-size: 0.75rem;
+    color: #313131;
+    text-transform: uppercase;
+}
+
+#myBtn {
+    display: none;
+    font-size: .6rem;
+    position: fixed;
+    bottom: 1rem;
+    right: .9rem;
+    z-index: 99;
+    border: none;
+    outline: 0;
+    background-color: #268bd2;
+    color: #fff;
+    cursor: pointer;
+    padding: .4rem .6rem;
+    border-radius: .4rem
+}
+
+#myBtn:hover {
+    background-color: #555
 }
 
 

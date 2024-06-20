@@ -12,14 +12,12 @@
 
 {% block content %}
 <h1 class="post-title">{{ category.name }}</h1>
-<ul class="posts post-list">
+<ul class="post-list">
     {% for post in posts|selectattr("category", "equalto", category) %}
     <li>
-        <span>
-            <a href="/posts/{{ post.slug }}/">{{ post.title }}</a> -
-            <small>
-                <time class="pull-right post-list">{{ post.date.strftime('%a, %b %d, %Y') }}</time>
-            </small>
+        <a href="/posts/{{ post.slug }}/">{{ post.title }}</a>
+        <span class="post-date">
+            <small> - <time datetime="{{ post.date }}">{{ post.date.strftime('%a, %b %d, %Y') }}</time></small>
         </span>
     </li>
     {% endfor %}

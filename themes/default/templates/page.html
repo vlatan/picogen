@@ -15,10 +15,12 @@
     <header>
         <h1 class="post-title">{{ page.title }}</h1>
         <span class="post-date">
-            <small>{{ page.date.strftime('%a, %b %d, %Y') }}</small>
+            <small><time datetime="{{ page.date }}">{{ page.date.strftime('%a, %b %d, %Y') }}</time></small>
         </span>
     </header>
 
-    {{ page.content | safe }}
+    <div class="article-content">
+        {{ page.content | safe }}
+    </div>
 </article>
 {% endblock content %}
