@@ -199,7 +199,7 @@ main.main-content {
 }
 
 h1.post-title {
-    font-size: clamp(2rem, 1rem + 5vw, 4rem);
+    font-size: clamp(1rem, 1rem + 2.5vw, 2rem);
     font-weight: 900;
     color: #255b98
 }
@@ -219,8 +219,17 @@ h1.post-title {
     margin-bottom: 1.25rem
 }
 
-.article-content>h2 {
+.article-content>h2,
+.article-content>h3 {
     margin-top: 2rem;
+}
+
+.article-content ul {
+    list-style-type: disc;
+}
+
+.article-content ol li::marker {
+    font-weight: bold;
 }
 
 .footer-wrap {
