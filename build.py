@@ -5,6 +5,7 @@ from pathlib import Path
 from slugify import slugify
 from markdown import Markdown
 from datetime import datetime
+from bs4 import BeautifulSoup
 from dotenv import dotenv_values
 from dataclasses import dataclass
 from itertools import zip_longest
@@ -24,6 +25,7 @@ class Page:
     date: datetime
     modified: datetime
     slug: str
+    excerpt: str
     content: str
 
 
@@ -64,22 +66,26 @@ def parse_markdown_file(path: Path, makrdown_instance: Markdown) -> dict:
         if key == "Category":
             # init Category object
             data[key.lower()] = Category(name=value, slug=slugify(value))
-
-            # set as excerpt as the first three sentences from the paragraph
-            paragraphs = content.strip().split("\n\n")
-            sentences = (
-                paragraphs[1].split(". ")
-                if "/images/" in paragraphs[0]
-                else paragraphs[0].split(". ")
-            )
-            data["excerpt"] = ". ".join(sentences[:3]) + "."
             continue
 
         data[key.lower()] = value
 
-    # convert markdown to html
-    data["content"] = makrdown_instance.convert(content.strip())
+    # convert markdown to html and plain text
+    data["content"] = html_content = makrdown_instance.convert(content.strip())
+    text_content = BeautifulSoup(html_content, features="html.parser").get_text()
 
+    # construct excerpt
+    excerpt = text_content[:300]
+    if excerpt[-1] == ".":
+        data["excerpt"] = excerpt
+        return data
+
+    for char in text_content[300:]:
+        excerpt += char
+        if char == ".":
+            break
+
+    data["excerpt"] = excerpt
     return data
 
 

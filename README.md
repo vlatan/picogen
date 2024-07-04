@@ -79,6 +79,7 @@ The static site files and directories are generated within the `build` directory
 
 
 ## TODO:
+* Generate images folder in each post folder
 * Add maybe CLI for build and serve.
 * Pagination
 
