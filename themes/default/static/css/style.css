@@ -158,6 +158,8 @@ ul.nav-list {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    gap: calc(var(--gap) / 2);
 }
 
 ul.nav-list a {
