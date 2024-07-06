@@ -74,16 +74,13 @@ def parse_markdown_file(path: Path, makrdown_instance: Markdown) -> dict:
     data["content"] = html_content = makrdown_instance.convert(content.strip())
     text_content = BeautifulSoup(html_content, features="html.parser").get_text()
 
-    # construct excerpt
+    # construct excerpt of minimum 300 characters
     excerpt = text_content[:300]
-    if excerpt[-1] == ".":
-        data["excerpt"] = excerpt
-        return data
-
-    for char in text_content[300:]:
-        excerpt += char
-        if char == ".":
-            break
+    if excerpt[-1] != ".":
+        for char in text_content[300:]:
+            excerpt += char
+            if char == ".":
+                break
 
     data["excerpt"] = excerpt
     return data
@@ -95,22 +92,25 @@ def content_walk(path: Path) -> tuple[list[Path], list[Path]]:
     Also Copy/paste posts/images dir.
     """
 
-    pages_paths, posts_paths = [], []
+    pages_paths, posts_paths, posts_dirs, pages_dirs = [], [], [], []
     for root, dirs, files in path.walk():
-        if str(root) == "content/posts/images":
-            shutil.copytree(root, "build/posts/images")
-            continue
-
-        if str(root) == "content/pages/images":
-            shutil.copytree(root, "build/pages/images")
-            continue
-
         if str(root) == "content/pages":
-            pages_paths = [root / fp for fp in files]
+            pages_dirs = [root / dr for dr in dirs]
             continue
 
         if str(root) == "content/posts":
-            posts_paths = [root / fp for fp in files]
+            posts_dirs = [root / dr for dr in dirs]
+            continue
+
+        if root in posts_dirs:
+            current_posts_paths = [root / fp for fp in files]
+            posts_paths += current_posts_paths
+            continue
+
+        if root in pages_dirs:
+            current_pages_paths = [root / fp for fp in files]
+            pages_paths += current_pages_paths
+            continue
 
     return posts_paths, pages_paths
 
@@ -126,15 +126,31 @@ def render_content(
     posts, pages, categories = set(), set(), set()
     for post_path, page_path in zip_longest(posts_paths, pages_paths):
         if post_path:
+            # create post and category objects to hold data
             data = parse_markdown_file(post_path, makrdown_instance)
             post = Post(**data)
             posts.add(post)
             categories.add(data.get("category"))
 
+            # create post dir in the build and copy its images dir if any
+            src_post_images = post_path.parent / "images"
+            dst_post_dir = Path(f"build/posts/{post.slug}")
+            dst_post_dir.mkdir(exist_ok=True, parents=True)
+            if src_post_images.exists():
+                shutil.copytree(src_post_images, dst_post_dir / "images")
+
         if page_path:
+            # create page object to hold data
             data = parse_markdown_file(page_path, makrdown_instance)
             page = Page(**data)
             pages.add(page)
+
+            # create page dir in the build and copy its images dir if any
+            src_page_images = page_path.parent / "images"
+            dst_page_dir = Path(f"build/pages/{page.slug}")
+            dst_page_dir.mkdir(exist_ok=True, parents=True)
+            if src_page_images.exists():
+                shutil.copytree(src_page_images, dst_page_dir / "images")
 
     jinja_env.globals["posts"] = sorted(posts, key=lambda x: x.date, reverse=True)
     jinja_env.globals["pages"] = sorted(pages, key=lambda x: x.title)
@@ -145,14 +161,12 @@ def render_content(
             post_template = jinja_env.get_template("post.html")
             parsed_post = post_template.render(post=post)
             post_dir_path = Path(f"build/posts/{post.slug}")
-            post_dir_path.mkdir(exist_ok=True, parents=True)
             Path(post_dir_path / "index.html").write_text(parsed_post)
 
         if page:
             page_template = jinja_env.get_template("page.html")
             parsed_page = page_template.render(page=page)
             page_dir_path = Path(f"build/pages/{page.slug}")
-            page_dir_path.mkdir(exist_ok=True, parents=True)
             Path(page_dir_path / "index.html").write_text(parsed_page)
 
         if category:

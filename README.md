@@ -14,7 +14,7 @@ pip install --upgrade pip &&
 pip install -r requirements.txt
 ```
 
-Create an `.env` file, as described in [example.env](example.env). Create a `content` directory. If you are using your own theme use the following structure. Note, Inclusion of `sitemap.xsl` is optional. You can also include aditional templates that extend or use these.
+Create an `.env` file, as described in [example.env](example.env). If you are using your own theme use the following structure. Note, Inclusion of `sitemap.xsl` is optional. You can also include aditional templates that extend or use these.
 
 ```
 ├── static
@@ -39,15 +39,23 @@ The `config` variable that containes the values from your `.env` file is availab
 
 ## Writing Content
 
-Place your posts markdown files in a `posts` directory and your pages in the `pages` directory within the content directory. Include `images` directories within them if necessary.
+Create a `content` directory. Place your posts markdown files in a `posts` directory and your pages in the `pages` directory within the `content` directory. Include `images` directories within each post or page directory if necessary.
 
 ```
 ├── posts
-│   ├── post.md
-│   └── images
+│   ├── post-dir
+│   │   ├── post.md
+│   │   └── images
+|   |       └── image.jpeg
+│   └── post-dir
+│       ├── post.md
+│       └── images
+|           └── image.jpeg
 └── pages
-    ├── page.md
-    └── images
+    └── page-dir
+        ├── page.md
+        └── images
+            └── image.jpeg
 ```
 
 
