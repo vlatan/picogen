@@ -1,4 +1,4 @@
-# Nanogen
+# Picogen
 
 A very simple static website generator that uses [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) to generate your content.
 
