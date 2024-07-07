@@ -153,6 +153,10 @@ header.primary-header {
     flex-wrap: wrap;
 }
 
+header.primary-header a {
+    text-decoration: none;
+}
+
 nav.primary-nav {
     display: flex;
     align-items: center;
@@ -172,6 +176,14 @@ ul.nav-list a {
     font-size: 0.85rem;
     color: #313131;
     text-transform: uppercase;
+    border: 1px solid #ccc;
+    padding: calc(var(--gap) / 4) calc(var(--gap) / 3);
+    border-radius: calc(var(--gap) / 4);
+    text-decoration: none;
+}
+
+ul.nav-list a:hover {
+    background-color: #ccc;
 }
 
 .content,
