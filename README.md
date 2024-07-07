@@ -81,6 +81,14 @@ python -m http.server --directory build --bind localhost
 
 The static site files and directories are generated within the `build` directory.
 
+## Deploy to AWS
+
+Run the script `deploy.sh` with one argument that is the name of the AWS S3 bucket. This will synchronize the `build` directory with the designated S3 bucket (it will delete obsolete files in the bucket, and upload modified/new files), giving the static assets (images, css, js) cache-control metadata with large expire value, some assets with one day cache expiry, and everything else without any metadata.
+
+``` bash
+./deploy.sh example.com
+```
+
 
 ## References:
 - https://jinja.palletsprojects.com/en/3.1.x/
