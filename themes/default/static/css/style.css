@@ -165,6 +165,7 @@ ul.nav-list {
     margin: 0;
     display: flex;
     gap: calc(var(--gap) / 2);
+    flex-wrap: wrap;
 }
 
 ul.nav-list a {
