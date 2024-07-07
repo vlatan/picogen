@@ -153,10 +153,6 @@ header.primary-header {
     flex-wrap: wrap;
 }
 
-/* header.primary-header a {
-    text-decoration: none;
-} */
-
 nav.primary-nav {
     display: flex;
     align-items: center;
