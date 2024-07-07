@@ -130,6 +130,11 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--gap);
+    height: 100%;
+}
+
+.main-content {
+    flex-grow: 1;
 }
 
 .header-wrap {
