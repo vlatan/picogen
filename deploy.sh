@@ -12,8 +12,8 @@ aws s3 sync build s3://$1 --exclude "*" \
 # sync json, ico, xml, xsl files
 # to s3://example.com with small max-age
 aws s3 sync build s3://$1 --exclude "*" \
---include "*.json" --include "*.ico" --include ".xml" \
---include ".xsl" --cache-control "public, max-age=86400" \
+--include "*.json" --include "*.ico" --include "*.xml" \
+--include "*.xsl" --cache-control "public, max-age=86400" \
 --storage-class INTELLIGENT_TIERING --delete
 
 # sync the rest of the files with no max-age cache
