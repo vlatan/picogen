@@ -1,5 +1,7 @@
 :root {
-    --gap: 2rem;
+    --default-gap: clamp(1rem, 1rem + 2vw, 2rem);
+    --large-font-size: var(--default-gap);
+    --gap: var(--default-gap);
     --max-site-width: 750px;
 }
 
@@ -155,7 +157,7 @@ header.primary-header {
 
 header.primary-header h1,
 header.primary-header h2 {
-    font-size: clamp(1rem, 1rem + 2.5vw, 2rem);
+    font-size: var(--large-font-size);
     display: flex;
     align-items: center;
 }
@@ -170,7 +172,7 @@ header.primary-header h2 a {
 
 header.primary-header h1 a img,
 header.primary-header h2 a img {
-    width: clamp(1rem, 1rem + 2.5vw, 1.5rem);
+    width: clamp(1rem, 1rem + 2vw, 1.5rem);
     height: auto;
 }
 
@@ -236,7 +238,7 @@ main.main-content {
 }
 
 h1.post-title {
-    font-size: clamp(1rem, 1rem + 2.5vw, 2rem);
+    font-size: var(--large-font-size);
     font-weight: 900;
 }
 
