@@ -81,6 +81,7 @@ python -m http.server --directory build --bind localhost
 
 The static site files and directories are generated within the `build` directory.
 
+
 ## Deploy to AWS
 
 Run the [deploy.sh](deploy.sh) script with one argument that is the name of the AWS S3 bucket. This will synchronize the `build` directory with the designated S3 bucket (it will delete obsolete files in the bucket, and upload modified/new files), giving the static assets (images, css, js) cache-control metadata with large expire value, some assets with one day cache expiry, and everything else without any metadata.
@@ -88,6 +89,13 @@ Run the [deploy.sh](deploy.sh) script with one argument that is the name of the 
 ``` bash
 ./deploy.sh example.com
 ```
+
+If you run the same script with two arguments (two buckets) it will use the second bucket to backup the `content` directory containing your markdown files.
+
+``` bash
+./deploy.sh example.com example.down.makrdown
+```
+
 
 
 ## References:

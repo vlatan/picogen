@@ -18,3 +18,9 @@ aws s3 sync build s3://$1 --exclude "*" \
 
 # sync the rest of the files with no max-age cache
 aws s3 sync build s3://$1 --storage-class INTELLIGENT_TIERING --delete
+
+# exit if there's no second argument
+[ -z "$2" ] && echo "Deployed without backing up the markdown files." && exit 0
+
+# backup the markdown files in a separate bucket
+aws s3 sync content s3://$2 --storage-class INTELLIGENT_TIERING --delete
