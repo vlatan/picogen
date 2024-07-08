@@ -97,7 +97,6 @@ If you run the same script with two arguments (two buckets) it will use the seco
 ```
 
 
-
 ## References:
 - https://jinja.palletsprojects.com/en/3.1.x/
 
