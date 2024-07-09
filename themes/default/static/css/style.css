@@ -279,11 +279,14 @@ h2.post-title {
     background-color: #dedede;
     color: #4d4d4d;
     font-size: 1rem;
-    padding: 3rem;
+    padding: var(--gap) 0;
     text-align: center;
 }
 
 footer.primary-footer {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--gap) / 4);
     width: min(var(--max-site-width), 100% - (2 * var(--gap)));
     margin: 0 auto;
     font-size: 0.75rem;
@@ -303,6 +306,7 @@ ul.footer-list {
     flex-wrap: wrap;
     font-weight: 700;
     list-style-type: none;
+    line-height: 1;
     padding: 0;
     margin: 0;
 }
