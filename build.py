@@ -4,11 +4,11 @@ import jinja2 as jinja
 from pathlib import Path
 from slugify import slugify
 from markdown import Markdown
-from datetime import datetime
 from bs4 import BeautifulSoup
 from dotenv import dotenv_values
 from dataclasses import dataclass
 from itertools import zip_longest
+from datetime import datetime, date
 
 from config import Config
 
@@ -234,6 +234,7 @@ if __name__ == "__main__":
         loader=loader,
     )
     jinja_env.globals["config"] = cfg
+    jinja_env.globals["today"] = date.today
     jinja_env.filters["autoversion"] = autoversion_file
 
     # remove the build directory
