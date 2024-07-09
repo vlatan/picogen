@@ -286,7 +286,7 @@ h2.post-title {
 footer.primary-footer {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--gap) / 4);
+    gap: calc(var(--gap) / 8);
     width: min(var(--max-site-width), 100% - (2 * var(--gap)));
     margin: 0 auto;
     font-size: 0.75rem;
