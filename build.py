@@ -54,7 +54,7 @@ def parse_markdown_file(path: Path, makrdown_instance: Markdown) -> dict:
     """Take post or page markdown filepath and return a dict of necessary data."""
 
     md_content = path.read_text().strip()
-    _, meta, content = md_content.split("---")
+    _, meta, content = md_content.split("---", maxsplit=2)
 
     data = {}
     for line in meta.strip().splitlines():
