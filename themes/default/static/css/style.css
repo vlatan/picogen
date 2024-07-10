@@ -187,7 +187,7 @@ ul.nav-list {
     padding: 0;
     margin: 0;
     display: flex;
-    gap: calc(var(--gap) / 2);
+    gap: calc(var(--gap) / 3);
     flex-wrap: wrap;
 }
 
