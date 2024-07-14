@@ -89,28 +89,14 @@ def parse_markdown_file(path: Path, makrdown_instance: Markdown) -> dict:
 def content_walk(path: Path) -> tuple[list[Path], list[Path]]:
     """
     Walk a dir and gather specific filepaths (pages and posts).
-    Also Copy/paste posts/images dir.
     """
 
     pages_paths, posts_paths, posts_dirs, pages_dirs = [], [], [], []
     for root, dirs, files in path.walk():
-        if str(root) == "content/pages":
-            pages_dirs = [root / dr for dr in dirs]
-            continue
-
-        if str(root) == "content/posts":
-            posts_dirs = [root / dr for dr in dirs]
-            continue
-
-        if root in posts_dirs:
-            current_posts_paths = [root / fp for fp in files]
-            posts_paths += current_posts_paths
-            continue
-
-        if root in pages_dirs:
-            current_pages_paths = [root / fp for fp in files]
-            pages_paths += current_pages_paths
-            continue
+        pages_dirs += [root / dr for dr in dirs if str(root) == "content/pages"]
+        posts_dirs += [root / dr for dr in dirs if str(root) == "content/posts"]
+        posts_paths += [root / fp for fp in files if root in posts_dirs]
+        pages_paths += [root / fp for fp in files if root in pages_dirs]
 
     return posts_paths, pages_paths
 
