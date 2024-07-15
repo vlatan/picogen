@@ -1,1 +1,1 @@
-from .__main__ import build
+from .generate import main as build
