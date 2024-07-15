@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from itertools import zip_longest
 from datetime import datetime, date
 
-from picogen.config import Config
+from .config import Config
 
 
 @dataclass(frozen=True)
