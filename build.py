@@ -191,8 +191,7 @@ def render_content(
         pass
 
 
-if __name__ == "__main__":
-
+def main() -> None:
     logging.getLogger().setLevel(logging.INFO)
 
     content_path = Path("content")
@@ -236,3 +235,7 @@ if __name__ == "__main__":
     md = Markdown(extensions=["toc", "codehilite", "extra"], output_format="html")
     # parse and render all content
     render_content(posts_paths, pages_paths, md, jinja_env)
+
+
+if __name__ == "__main__":
+    main()
