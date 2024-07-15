@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "picogen"
 version = "0.0.1"
-description = "Tiny statis website generator."
+description = "Tiny static website generator."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.8"
