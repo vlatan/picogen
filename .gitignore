@@ -9,3 +9,6 @@ venv/
 # build dir
 build/
 content/
+
+# packaging byproduct
+*.egg-info
