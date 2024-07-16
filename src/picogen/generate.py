@@ -185,7 +185,7 @@ def render_content(
         pass
 
 
-def main() -> None:
+def generate_website() -> None:
     """Build the static website."""
 
     # set logging level
@@ -248,7 +248,3 @@ def main() -> None:
 
     # parse and render all content
     render_content(build_dir, posts_paths, pages_paths, md, jinja_env)
-
-
-if __name__ == "__main__":
-    main()
