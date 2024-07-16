@@ -145,49 +145,42 @@ def render_content(
 
     for post, page, category in zip_longest(posts, pages, categories):
         if post:
-            post_template = jinja_env.get_template("post.html")
-            parsed_post = post_template.render(post=post)
-            post_dir_path = build_dir / "posts" / post.slug
-            Path(post_dir_path / "index.html").write_text(parsed_post)
+            post_html = jinja_env.get_template("post.html").render(post=post)
+            post_dir_path = build_dir / "posts" / post.slug / "index.html"
+            post_dir_path.write_text(post_html)
 
         if page:
-            page_template = jinja_env.get_template("page.html")
-            parsed_page = page_template.render(page=page)
-            page_dir_path = build_dir / "pages" / page.slug
-            Path(page_dir_path / "index.html").write_text(parsed_page)
+            page_html = jinja_env.get_template("page.html").render(page=page)
+            page_dir_path = build_dir / "pages" / page.slug / "index.html"
+            page_dir_path.write_text(page_html)
 
         if category:
             cat_template = jinja_env.get_template("category.html")
-            parsed_cat = cat_template.render(category=category)
+            cat_html = cat_template.render(category=category)
             cat_dir_path = build_dir / "categories" / category.slug
             cat_dir_path.mkdir(exist_ok=True, parents=True)
-            Path(cat_dir_path / "index.html").write_text(parsed_cat)
+            (cat_dir_path / "index.html").write_text(cat_html)
 
     # render homepage
-    home_template = jinja_env.get_template("home.html")
-    parsed_home = home_template.render()
-    (build_dir / "index.html").write_text(parsed_home)
+    home_html = jinja_env.get_template("home.html").render()
+    (build_dir / "index.html").write_text(home_html)
 
     # render 404 page
-    not_found_template = jinja_env.get_template("404.html")
-    parsed_not_found = not_found_template.render()
-    (build_dir / "404.html").write_text(parsed_not_found)
+    not_found_html = jinja_env.get_template("404.html").render()
+    (build_dir / "404.html").write_text(not_found_html)
 
     # render robots.txt
-    robots_template = jinja_env.get_template("robots.txt")
-    parsed_robots = robots_template.render()
-    (build_dir / "robots.txt").write_text(parsed_robots)
+    robots_txt = jinja_env.get_template("robots.txt").render()
+    (build_dir / "robots.txt").write_text(robots_txt)
 
     # render sitemap.xml
-    xml_template = jinja_env.get_template("sitemap.xml")
-    parsed_xml = xml_template.render()
-    (build_dir / "sitemap.xml").write_text(parsed_xml)
+    sitemap_xml = jinja_env.get_template("sitemap.xml").render()
+    (build_dir / "sitemap.xml").write_text(sitemap_xml)
 
     # try to render sitemap.xsl
     try:
-        xsl_template = jinja_env.get_template("sitemap.xsl")
-        parsed_xsl = xsl_template.render()
-        (build_dir / "sitemap.xsl").write_text(parsed_xsl)
+        sitemap_xsl = jinja_env.get_template("sitemap.xsl").render()
+        (build_dir / "sitemap.xsl").write_text(sitemap_xsl)
     except jinja.exceptions.TemplateNotFound:
         pass
 
