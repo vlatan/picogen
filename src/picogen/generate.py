@@ -225,13 +225,14 @@ def main() -> None:
         raise FileNotFoundError(msg)
 
     # load theme's templates folder to Jinja's environment
-    loader = jinja.FileSystemLoader(templates_path)
     jinja_env = jinja.Environment(
         trim_blocks=True,
         lstrip_blocks=True,
         autoescape=jinja.select_autoescape(),
-        loader=loader,
+        loader=jinja.FileSystemLoader(templates_path),
     )
+
+    # define jinja's globals
     jinja_env.globals["config"] = cfg
     jinja_env.globals["today"] = date.today
     jinja_env.filters["autoversion"] = autoversion_file
@@ -239,16 +240,19 @@ def main() -> None:
     # remove the build directory
     build_dir = working_dir / "build"
     shutil.rmtree(build_dir, ignore_errors=True)
-    # include the static dir in the build
+
+    # include the static dir in the build dir
     shutil.copytree(static_path, build_dir / "static")
-    # include the favicons in the root dir too
+
+    # include the favicons in the root of the build dir too
     shutil.copytree(static_path / "favicons", build_dir, dirs_exist_ok=True)
 
-    # get posts and pages path in content dir
+    # get posts and pages path from the content dir
     posts_paths, pages_paths = content_walk(content_path)
 
     # create markdown instance
     md = Markdown(extensions=["toc", "codehilite", "extra"], output_format="html")
+
     # parse and render all content
     render_content(build_dir, posts_paths, pages_paths, md, jinja_env)
 
