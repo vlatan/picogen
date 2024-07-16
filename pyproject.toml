@@ -1,13 +1,15 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [project]
 name = "picogen"
 version = "0.0.1"
 description = "Tiny static website generator."
 readme = "README.md"
 license = { file = "LICENSE" }
+maintainers = [{ name = "vlatan" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
 requires-python = ">=3.8"
 dependencies = [
     "beautifulsoup4 == 4.12.3",
