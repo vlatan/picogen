@@ -9,6 +9,10 @@ venv/
 # build dir
 build/
 content/
+dist/
 
-# packaging byproduct
-*.egg-info
+# package build byproduct
+*.egg-info/
+
+# twine config
+.pypirc
