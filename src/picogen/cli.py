@@ -20,10 +20,20 @@ def main() -> None:
         "-g",
         "--generate",
         action="store_true",
-        help="generate a static website into 'build' dir",
+        help='generate a static website into the "build" dir',
     )
-    parser.add_argument("-d", "--deploy", metavar="BUCKET_NAME")
-    parser.add_argument("-b", "--backup", metavar="BUCKET_NAME")
+    parser.add_argument(
+        "-d",
+        "--deploy",
+        metavar="BUCKET_NAME",
+        help='sync the "build" dir with a bucket',
+    )
+    parser.add_argument(
+        "-b",
+        "--backup",
+        metavar="BUCKET_NAME",
+        help='sync the "content" dir with a bucket',
+    )
     args = parser.parse_args()
 
     if args.generate:
