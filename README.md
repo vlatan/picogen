@@ -3,107 +3,114 @@
 A very simple static website generator that uses [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) to generate your content.
 
 
-## Prerequisites
+## Installation
 
-Create/activate virtual environment and install the dependencies.
+Create/activate virtual environment and install `picogen` in your working directory.
 
 ``` bash
 python3 -m venv .venv &&
 source .venv/bin/activate &&
 pip install --upgrade pip &&
-pip install -r requirements.txt
+pip install picogen
 ```
 
-Create an `.env` file, as described in [example.env](example.env). If you are using your own theme use the following structure. Note, Inclusion of `sitemap.xsl` is optional. You can also include aditional templates that extend or use these.
+## Directory Structure
+
+In your working directory you need to have the following structure where you'll have an `.env` file, a `content` directory in which you'll have your markdown files, and **optionally** if you don't use the default theme that ships with `picogen` you'll need a `themes` directory in which you'll have your own theme. You need to follow this exact same structure in order for `picogen` to know what to look where. Note, the inclusion of `sitemap.xsl` in your custom theme is optional. You can also include aditional templates that extend or use the existing templates.
 
 ```
-├── static
-│   ├── css
-│   ├── favicons
-│   └── images
-└── templates
-    ├── home.html       // homepage
-    ├── post.html       // each article
-    ├── page.html       // each page
-    ├── category.html   // each category
-    ├── 404.html        // 404 page
-    ├── robots.txt      // robots file
-    ├── sitemap.xml     // sitemap xml file
-    └── sitemap.xsl     // sitemap xsl file (optional)
+├── .env
+|
+├── content
+|   ├── posts
+|   │   ├── post_1
+|   │   │   ├── post.md
+|   │   │   └── images
+|   |   |       ├── image_1.jpeg
+|   |   |       └── image_2.png
+|   │   └── post_2
+|   │       ├── post.md
+|   │       └── images
+|   |           └── image.jpeg
+|   └── pages
+|       └── page_1
+|           ├── page.md
+|           └── images
+|               └── image.jpeg
+|
+└── themes                      // optional
+    └── custom_theme
+        ├── static
+        │   ├── css
+        │   ├── favicons
+        │   └── images
+        └── templates
+            ├── home.html        // homepage
+            ├── post.html        // each article
+            ├── page.html        // each page
+            ├── category.html    // each category
+            ├── 404.html         // 404 page
+            ├── robots.txt       // robots file
+            ├── sitemap.xml      // sitemap xml file
+            └── sitemap.xsl      // sitemap xsl file (optional)
 ```
 
-During the build, all the files in the `static/favicons` directory will be copied over to the root of the build too.
+## Config
 
-The `config` variable that containes the values from your `.env` file is available to all `jinja` templates. Also variables `posts`, `pages` and `categories` that contain all posts, pages and categories are available to all `jinja` templates. Additionaly, single `post`, `page` and `category` variables are available to the templates with the same names respectively.
+The `.env` file should have the following content, out which all of the values are optional. If you use your own custom theme though you need to designate its directory name (`THEME`) in the `.env` file.
 
+```
+# .env file
+
+SITE_URL=
+SITE_NAME=
+SITE_TAGLINE=
+
+THEME=
+GTAG_ID=
+CONTACT_EMAIL=
+```
 
 ## Writing Content
 
-Create a `content` directory. Place your posts markdown files in a `posts` directory and your pages in the `pages` directory within the `content` directory. Include `images` directories within each post or page directory if necessary.
-
-```
-├── posts
-│   ├── post-dir
-│   │   ├── post.md
-│   │   └── images
-|   |       └── image.jpeg
-│   └── post-dir
-│       ├── post.md
-│       └── images
-|           └── image.jpeg
-└── pages
-    └── page-dir
-        ├── page.md
-        └── images
-            └── image.jpeg
-```
-
-
-Every markdown file at the top needs to have a **metadata** section wrapped with `---`. The code will look for this section in each file and will warn you if something is missing. For example here's a post metadata:
+Every markdown file at the top needs to have a **metadata** section wrapped with `---`. `Picogen` will look for this section in each markdown file and will warn you if something is missing. For example here's a post metadata:
 ```
 ---
 Title: Here Goes the Title
 Date: 2017-10-30 10:20
 Modified: 2017-10-30 10:20
 Category: Here Goes the Category
-Image: /path/to/image.jpg
+Image: relative/path/to/image.jpg
 Slug: example-url-slug
 ---
 ```
 
+## Build, Serve, Deploy and Backup
 
-## Build and Serve
+Type `picogen -h` for help.
+```
+picogen [-h] [-g] [-d BUCKET_NAME] [-b BUCKET_NAME]
+```
 
-``` bash
-python build.py && \
+Examples to build, deploy and backup your website:
+
+```
+picogen --generate --deploy bucket_name --backup bucket_name
+picogen -gd bucket_name -b bucket_name
+```
+
+The website will be generated within the `build` directory. During the build, all the files in the `static/favicons` directory in your theme will be copied over to the root of the `build` too.
+
+The `config` variable that containes the values from your `.env` file is available to all of the `jinja` templates. Also variables `posts`, `pages` and `categories` that contain all posts, pages and categories are available to all `jinja` templates. Additionaly, single `post`, `page` and `category` variables are available to the templates with the same names respectively.
+
+To serve your website locally on port `8000` you can use:
+```
 python -m http.server --directory build --bind localhost
-```
-
-The static site files and directories are generated within the `build` directory.
-
-
-## Deploy to AWS
-
-Run the [deploy.sh](deploy.sh) script with one argument that is the name of the AWS S3 bucket. This will synchronize the `build` directory with the designated S3 bucket (it will delete obsolete files in the bucket, and upload modified/new files), giving the static assets (images, css, js) cache-control metadata with large expire value, some assets with one day cache expiry, and everything else without any metadata.
-
-``` bash
-./deploy.sh example.com
-```
-
-If you run the same script with two arguments (two buckets) it will use the second bucket to backup the `content` directory containing your markdown files.
-
-``` bash
-./deploy.sh example.com example.down.makrdown
 ```
 
 
 ## References:
 - https://jinja.palletsprojects.com/en/3.1.x/
-
-
-## TODO:
-* Add maybe CLI for build and serve.
-* Pagination
 
 
 ## License
