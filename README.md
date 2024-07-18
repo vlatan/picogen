@@ -99,7 +99,7 @@ picogen --generate --deploy bucket_name --backup bucket_name
 picogen -gd bucket_name -b bucket_name
 ```
 
-`Picogen` has a baked in option for deployment and/or backup of your static website to AWS S3. You can ommit these functions simply by not using the flags `--deploy` and/or `--backup`. You can just use `picogen --generate` and `picogen` will look for your `content` directory and optionally your `themes/your-theme` directory and build the website into the `build` directory. Obviusly if you want to deploy and/or backup your website to AWS S3 you need to setup AWS CLI as well as S3 buckets, one for deploument and one for backing up your makrdown files.
+`Picogen` has a baked in option for deployment and/or backup of your static website to AWS S3. You can ommit these functions simply by not using the flags `--deploy` and/or `--backup`. You can just use `picogen --generate` and `picogen` will look for your `content` directory and optionally your `themes/your-theme` directory and build the website into the `build` directory. Obviusly if you want to deploy and/or backup your website to AWS S3 you need to setup AWS CLI as well as S3 buckets, one for deployment and one for backing up your makrdown files.
 
 Note, during the build, all the files in the `static/favicons` directory in your theme will be copied over to the root of the `build` too.
 
