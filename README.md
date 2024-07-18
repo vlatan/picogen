@@ -14,7 +14,7 @@ pip install --upgrade pip &&
 pip install picogen
 ```
 
-## Directory Structure
+## Working Directory Structure
 
 In your working directory you need to have the following structure where you'll have an `.env` file, a `content` directory in which you'll have your markdown files, and **optionally** if you don't use the default theme that ships with `picogen` you'll need a `themes` directory in which you'll have your own theme. You need to follow this exact same structure in order for `picogen` to know what to look where. Note, the inclusion of `sitemap.xsl` in your custom theme is optional. You can also include aditional templates that extend or use the existing templates.
 
