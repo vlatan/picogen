@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "picogen"
-version = "0.0.13"
-description = "Tiny static website generator."
+version = "0.0.14"
+description = "Minimalist static website generator in Python."
 readme = "README.md"
 license = { file = "LICENSE" }
 maintainers = [{ name = "vlatan" }]
