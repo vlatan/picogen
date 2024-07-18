@@ -1,6 +1,10 @@
+[build-system]
+requires = ["setuptools >= 61.0", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "picogen"
-version = "0.0.3"
+version = "0.0.12"
 description = "Tiny static website generator."
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -9,6 +13,13 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Intended Audience :: End Users/Desktop",
+    "Environment :: Console",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Content Management System",
+    "Topic :: Internet :: WWW/HTTP :: Site Management",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup :: Markdown",
+    "Topic :: Text Processing :: Markup :: HTML",
 ]
 requires-python = ">=3.8"
 dependencies = [

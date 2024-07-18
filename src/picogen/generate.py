@@ -1,3 +1,4 @@
+import os
 import shutil
 import logging
 import jinja2 as jinja
@@ -92,10 +93,16 @@ def content_walk(path: Path) -> tuple[list[Path], list[Path]]:
     """
 
     pages_paths, posts_paths, posts_dirs, pages_dirs = [], [], [], []
-    for root, dirs, files in path.walk():
-        pages_dirs += [root / dr for dr in dirs if str(root).endswith("content/pages")]
-        posts_dirs += [root / dr for dr in dirs if str(root).endswith("content/posts")]
+    for root, dirs, files in os.walk(path):
+        posts = root.endswith("content/posts")
+        pages = root.endswith("content/pages")
+
+        root = Path(root)
+
+        posts_dirs += [root / dr for dr in dirs if posts]
         posts_paths += [root / fp for fp in files if root in posts_dirs]
+
+        pages_dirs += [root / dr for dr in dirs if pages]
         pages_paths += [root / fp for fp in files if root in pages_dirs]
 
     return posts_paths, pages_paths
