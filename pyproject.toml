@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "picogen"
-version = "0.0.16"
+dynamic = ["version"]
 description = "Minimalist static website generator in Python."
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -35,3 +35,6 @@ picogen = "picogen.cli:main"
 
 [project.urls]
 "Homepage" = "https://github.com/vlatan/picogen"
+
+[tool.setuptools.dynamic]
+version = { attr = "picogen.__version__" }
