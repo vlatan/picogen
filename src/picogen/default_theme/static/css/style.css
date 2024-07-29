@@ -24,11 +24,6 @@
     margin: 0;
 }
 
-html,
-body {
-    height: 100%;
-}
-
 /*
     Typographic tweaks!
     3. Add accessible line-height
@@ -125,6 +120,7 @@ h2 a {
 /* ##################### Content ##################### */
 
 body {
+    overflow-y: scroll;
     background-color: rgb(222, 222, 222, .1);
 }
 
@@ -132,7 +128,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--gap);
-    height: 100%;
+    min-height: 100vh;
 }
 
 .main-content {
