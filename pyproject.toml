@@ -30,6 +30,9 @@ dependencies = [
     "python-slugify == 8.0.4",
 ]
 
+[project.optional-dependencies]
+dev = ["pytest == 8.3.2", "black == 24.4.2"]
+
 [project.scripts]
 picogen = "picogen.cli:main"
 
