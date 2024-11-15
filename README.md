@@ -122,4 +122,4 @@ python -m http.server --directory build --bind localhost
 
 ## License
 
-[![License: MIT](https://img.shields.io/github/license/vlatan/nanogen?label=License)](/LICENSE "License: MIT")
+[![License: MIT](https://img.shields.io/github/license/vlatan/picogen?label=License)](/LICENSE "License: MIT")

@@ -1,6 +1,6 @@
 """Minimalist static website generator in Python."""
 
-__version__ = "0.0.19"
+__version__ = "0.0.20"
 
 
 from .deploy import deploy_website
