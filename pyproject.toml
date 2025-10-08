@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools >= 61.0", "setuptools-scm"]
+requires = ["setuptools >= 61.0", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -39,6 +39,3 @@ picogen = "picogen.cli:main"
 
 [project.urls]
 "Homepage" = "https://github.com/vlatan/picogen"
-
-[tool.setuptools.dynamic]
-version = { attr = "picogen.__version__" }
