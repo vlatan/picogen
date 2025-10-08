@@ -24,7 +24,7 @@ def deploy_website(bucket_name: str) -> None:
         '--cache-control "public, max-age=31536000" '
         "--storage-class INTELLIGENT_TIERING --delete"
     )
-    subprocess.run(sync_static, shell=True)
+    subprocess.run(sync_static, shell=True, check=True)
 
     # sync json, ico, xml, xsl files
     # to s3://{args.deploy} with small max-age
@@ -34,11 +34,11 @@ def deploy_website(bucket_name: str) -> None:
         '--include "*.xsl" --cache-control "public, max-age=86400" '
         "--storage-class INTELLIGENT_TIERING --delete"
     )
-    subprocess.run(sync_other, shell=True)
+    subprocess.run(sync_other, shell=True, check=True)
 
     # sync the rest of the files with no max-age cache
     sync_rest = (
         f"aws s3 sync {build_dir} s3://{bucket_name} "
         "--storage-class INTELLIGENT_TIERING --delete",
     )
-    subprocess.run(sync_rest, shell=True)
+    subprocess.run(sync_rest, shell=True, check=True)

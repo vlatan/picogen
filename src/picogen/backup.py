@@ -19,4 +19,4 @@ def backup_content(bucket_name: str) -> None:
         f"aws s3 sync {content_dir} s3://{bucket_name} ",
         "--storage-class INTELLIGENT_TIERING --delete",
     )
-    subprocess.run(sync_all, shell=True)
+    subprocess.run(sync_all, shell=True, check=True)
