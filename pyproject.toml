@@ -39,3 +39,6 @@ picogen = "picogen.cli:main"
 
 [project.urls]
 "Homepage" = "https://github.com/vlatan/picogen"
+
+[tool.setuptools_scm]
+version_file = "src/picogen/_version.py"
