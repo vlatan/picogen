@@ -7,11 +7,11 @@ name = "picogen"
 dynamic = ["version"]
 description = "Minimalist static website generator in Python."
 readme = "README.md"
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = ["LICENSE"]
 maintainers = [{ name = "vlatan" }]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Intended Audience :: End Users/Desktop",
     "Environment :: Console",
