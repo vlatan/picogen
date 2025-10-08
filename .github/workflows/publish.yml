@@ -15,6 +15,9 @@ jobs:
       id-token: write  # Required for trusted publishing
     steps:
       - uses: actions/checkout@v5
+        # Fetch all history for setuptools-scm to work
+        with:
+          fetch-depth: 0
       
       - name: Set up Python
         uses: actions/setup-python@v6
