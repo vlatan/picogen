@@ -12,7 +12,9 @@ jobs:
     name: Upload release to PyPI
     runs-on: ubuntu-latest
     permissions:
-      id-token: write  # Required for trusted publishing
+      # This permission allows GitHub Actions to generate 
+      # a short-lived OIDC token that PyPI can verify.
+      id-token: write
     steps:
       - uses: actions/checkout@v5
         # Fetch all history for setuptools-scm to work
