@@ -62,7 +62,7 @@ In your working directory you need to have the following structure where you'll 
 
 ## Config
 
-The `.env` file should have the following content, out which all of the values are optional. If you use your own custom theme though you need to designate its directory name (`THEME`) in the `.env` file.
+You need to export the following environment variables or have them in an `.env` file. If you use your own custom theme though you need to designate its directory name (`THEME`).
 
 ```
 # .env file

@@ -6,7 +6,7 @@ from pathlib import Path
 from slugify import slugify
 from markdown import Markdown
 from bs4 import BeautifulSoup
-from dotenv import dotenv_values
+from dotenv import load_dotenv
 from dataclasses import dataclass
 from itertools import zip_longest
 from datetime import datetime, date
@@ -195,6 +195,12 @@ def render_content(
 def generate_website() -> None:
     """Build the static website."""
 
+    # load values from the .env file to the environment
+    load_dotenv()
+
+    # init the config
+    cfg = Config()
+
     # set logging level
     logging.getLogger().setLevel(logging.INFO)
 
@@ -204,10 +210,6 @@ def generate_website() -> None:
     content_path = working_dir / "content"
     if not content_path.is_dir():
         raise FileNotFoundError(f"No 'content' directory: '{content_path}'.")
-
-    env_file = working_dir / ".env"
-    env_vars = {key: value for key, value in dotenv_values(env_file).items() if value}
-    cfg = Config(**env_vars)
 
     theme = working_dir / "themes" / cfg.THEME
     if cfg.THEME == "default":
