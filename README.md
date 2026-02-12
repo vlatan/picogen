@@ -117,9 +117,8 @@ python -m http.server --directory build --bind localhost
 
 
 ## References:
-- https://jinja.palletsprojects.com/en/3.1.x/
+https://jinja.palletsprojects.com/en/stable/
 
 
 ## License
-
 [![License: MIT](https://img.shields.io/github/license/vlatan/picogen?label=License)](/LICENSE "License: MIT")
